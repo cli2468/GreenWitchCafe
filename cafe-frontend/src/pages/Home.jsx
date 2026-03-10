@@ -137,7 +137,7 @@ export default function Home() {
                         <div className="md:col-span-7 flex flex-col gap-16 md:pt-8 w-full">
 
                             {/* Text Descriptor */}
-                            <div className="font-serif text-lg md:text-2xl leading-relaxed md:leading-[1.8] max-w-2xl text-brand-text">
+                            <div className="font-serif text-xl md:text-2xl leading-relaxed md:leading-[1.8] max-w-2xl text-brand-text">
                                 <p>
                                     A relaxing, plant-forward sanctuary right in the heart of downtown Highland. We've curated an intentional experience that nourishes both your body and your spirit.
                                 </p>
