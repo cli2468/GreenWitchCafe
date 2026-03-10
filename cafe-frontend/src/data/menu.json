@@ -1,0 +1,601 @@
+{
+  "siteMeta": {
+    "title": "The Green Witch Cafe | Vegan/Vegetarian Cafe in Highland, IN",
+    "description": "Full menu for The Green Witch Cafe in Highland, IN. Plant-forward sandwiches, juices, and more."
+  },
+  "restaurantInfo": {
+    "name": "The Green Witch Cafe",
+    "address": "2845 Highway Ave, Highland, IN 46322, USA",
+    "phone": "(219) 923-3800",
+    "hours": [
+      "Tuesday - Saturday: 9:00 AM - 4:00 PM",
+      "Sunday & Monday: Closed"
+    ],
+    "socialLinks": {
+      "facebook": "https://www.facebook.com/TheGreenWitchCafe/"
+    }
+  },
+  "menu": [
+    {
+      "category": "Add Ons",
+      "items": [
+        {
+          "name": "Gluten Free Bread",
+          "price": "$1.00",
+          "description": "Gluten-free bread replacer.",
+          "dietary": [
+            "Gluten-Free"
+          ]
+        },
+        {
+          "name": "Hummus Side",
+          "price": "$4.50",
+          "description": "A side portion of homemade creamy hummus.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Extra Dressing",
+          "price": "$0.75",
+          "description": "Additional side of any house dressing.",
+          "dietary": []
+        },
+        {
+          "name": "Side Chips",
+          "price": "$3.00",
+          "description": "Side of sweet potato chips.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Side Of Vegetables",
+          "price": "$3.95",
+          "description": "Side of grilled seasonal vegetables.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Side Pasta Salad",
+          "price": "$2.95",
+          "description": "Rotini noodles tossed with fresh tomato, cucumber, red onion, greens and balsamic dressing.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Tofu",
+          "price": "$3.50",
+          "description": "Side of sauteed tofu.",
+          "dietary": [
+            "Vegan"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Coffee & Tea",
+      "items": [
+        {
+          "name": "Chai Tea Latte",
+          "price": "$5.00",
+          "description": "Spiced black tea with vanilla, cinnamon and steamed milk",
+          "dietary": []
+        },
+        {
+          "name": "Cold Brew Coffee",
+          "price": "$5.00",
+          "description": "16 oz or 20 oz cold brew coffee",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Cortado",
+          "price": "$3.50",
+          "description": "Double shot espresso with dash of steamed milk",
+          "dietary": []
+        },
+        {
+          "name": "Drip Coffee",
+          "price": "$2.50",
+          "description": "16 oz or 20 oz drip coffee.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Espresso",
+          "price": "$3.00",
+          "description": "Rich, bold shot of straight espresso.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Golden Milk",
+          "price": "$5.00",
+          "description": "Your choice of milk steamed with turmeric, cinnamon, ginger, agave and a pinch of black pepper",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Hot Chocolate 16 oz",
+          "price": "$5.00",
+          "description": "Creamy, rich hot cocoa topped with your choice of milk.",
+          "dietary": []
+        },
+        {
+          "name": "Latte",
+          "price": "$5.00",
+          "description": "16 oz or 20 oz. espresso with choice of steamed milk.",
+          "dietary": []
+        },
+        {
+          "name": "Macchiato",
+          "price": "$3.50",
+          "description": "A shot of espresso marked with a dollop of milk foam.",
+          "dietary": []
+        },
+        {
+          "name": "Matcha Latte",
+          "price": "$5.00",
+          "description": "Matcha latte in choice of 16 oz, 20 oz.",
+          "dietary": []
+        },
+        {
+          "name": "Turmeric Latte",
+          "price": "$5.00",
+          "description": "Turmeric latte 16 oz, 20 oz. espresso with turmeric steamed in your choice of milk.",
+          "dietary": []
+        }
+      ]
+    },
+    {
+      "category": "Gnocchi",
+      "items": [
+        {
+          "name": "Gnocchi Basil Pesto",
+          "price": "$12.00",
+          "description": "Potato gnocchi with creamy basil pesto and parmesan cheese.",
+          "dietary": [
+            "Vegetarian"
+          ]
+        },
+        {
+          "name": "Marinara Basil Gnocchi",
+          "price": "$12.00",
+          "description": "Potato gnocchi with marinara basil sauce and parmesan cheese.",
+          "dietary": [
+            "Vegetarian"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Juices",
+      "items": [
+        {
+          "name": "Glow",
+          "price": "$7.00",
+          "description": "Fresh turmeric, carrots, green apple, ginger and lime.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Recovery",
+          "price": "$7.00",
+          "description": "Fresh carrot, green apple, lime and ginger.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Refresh",
+          "price": "$7.00",
+          "description": "Fresh carrots, orange, ginger and lime.",
+          "dietary": [
+            "Vegan"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Power Shots",
+      "items": [
+        {
+          "name": "Energy Shot",
+          "price": "$3.50",
+          "description": "2oz Energy Shot Ginger, turmeric, lemon, maple syrup and black pepper.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Flu Shot",
+          "price": "$3.50",
+          "description": "2oz Flu Shot. Ginger, lemon and cayenne pepper.",
+          "dietary": [
+            "Vegan"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Protein Shakes",
+      "items": [
+        {
+          "name": "Vanilla Protein Shake",
+          "price": "$7.00",
+          "description": "A smooth vanilla protein blend for post-workout or a quick meal.",
+          "dietary": []
+        },
+        {
+          "name": "Weight Gain Power Breakfast",
+          "price": "$9.00",
+          "description": "Chocolate & peanut butter mixed whey and soy protein with cold brew coffee, banana, granola and choice of milk",
+          "dietary": []
+        }
+      ]
+    },
+    {
+      "category": "Salads",
+      "items": [
+        {
+          "name": "Beet Salad",
+          "price": "$10.00",
+          "description": "Pickled beets, red onion, creamy goat cheese, toasted walnuts, dried cranberries and spinach with raspberry vinaigrette dressing.",
+          "dietary": [
+            "Vegetarian",
+            "Gluten-Free"
+          ]
+        },
+        {
+          "name": "Buddha Bowl",
+          "price": "$11.00",
+          "description": "Mixed greens, assorted grains, chef's choice of vegetables, seeds and toppings. Side of balsamic or raspberry vinaigrette.",
+          "dietary": [
+            "Vegan",
+            "Gluten-Free"
+          ]
+        },
+        {
+          "name": "Greek Witch Salad",
+          "price": "$10.00",
+          "description": "Fresh Cucumbers, tomatoes, onions, kalamata olives, feta cheese and mixed greens with homemade balsamic vinaigrette",
+          "dietary": [
+            "Vegetarian",
+            "Gluten-Free"
+          ]
+        },
+        {
+          "name": "Kale Quinoa Salad",
+          "price": "$10.00",
+          "description": "Chopped kale and quinoa with red onion, tomato, carrots, cucumber, cranberries and lemon olive oil dressing.",
+          "dietary": [
+            "Vegan",
+            "Gluten-Free"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Sandwiches",
+      "items": [
+        {
+          "name": "Avocado Toast - All 3 toppings",
+          "price": "$10.75",
+          "description": "Tomato, cucumber, radish with everything seasoning, flax and avocado.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Grilled Chicken Panini",
+          "price": "$11.25",
+          "description": "Grilled chicken breast, spinach, tomato, provolone cheese and pesto on focaccia bread.",
+          "dietary": []
+        },
+        {
+          "name": "Hummus Plate",
+          "price": "$9.75",
+          "description": "Homemade hummus with grilled vegetables, kalamata olives, feta cheese and choice of sweet potato chips or side salad.",
+          "dietary": [
+            "Vegetarian"
+          ]
+        },
+        {
+          "name": "Portobello Sandwich",
+          "price": "$11.25",
+          "description": "Grilled portobello mushroom, spinach, tomato, provolone cheese and pesto on focaccia bread.",
+          "dietary": [
+            "Vegetarian"
+          ]
+        },
+        {
+          "name": "Sicilian Panini",
+          "price": "$11.50",
+          "description": "Salami, ham, mortadella, mozzarella, greens, tomato and balsamic on ciabatta. Giardiniera side.",
+          "dietary": []
+        },
+        {
+          "name": "Tofu Wrap",
+          "price": "$10.75",
+          "description": "Vegan. Seared Tofu, greens, tomato, red cabbage, carrot, cucumber and fresh green goddess dressing in a spinach wrap.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Vegan Flatbread",
+          "price": "$10.00",
+          "description": "Vegan. Assorted grilled fresh vegetables on a base of homemade hummus topped with balsamic dressed greens.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Vegan Grilled Cheese And Soup of Day",
+          "price": "$9.95",
+          "description": "Vegan. Vegan mozzarella & cheddar cheeses grilled on multigrain bread with homemade vegan soup of the day.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Vegetable Wrap",
+          "price": "$10.95",
+          "description": "Vegetarian. Vegan. Homemade hummus, grilled zucchini, yellow squash, portobello mushroom, sweet peppers, artichoke hearts and spinach all in one tasty wrap.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Chicken Wrap",
+          "price": "$10.95",
+          "description": "Grilled chicken breast with mixed greens, tomato, onions, cucumber and fresh green goddess dressing in a spinach wrap.",
+          "dietary": []
+        },
+        {
+          "name": "Grilled Chicken & Artichoke Flatbread",
+          "price": "$11.50",
+          "description": "Grilled chicken breast, assorted vegetables and artichoke hearts on flatbread.",
+          "dietary": []
+        }
+      ]
+    },
+    {
+      "category": "Signature Drinks",
+      "items": [
+        {
+          "name": "Black Magic",
+          "price": "$5.00",
+          "description": "Lemonade and activated charcoal.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Fire Tonic",
+          "price": "$5.00",
+          "description": "Cinnamon, cayenne, agave, apple cider vinegar, water.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Morning Elixir",
+          "price": "$5.00",
+          "description": "Fresh lemonade, agave, turmeric, ginger.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Wicked Lemonade",
+          "price": "$5.00",
+          "description": "Fresh lemonade with steam whistle cold brew coffee.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Witch's Brew",
+          "price": "$5.00",
+          "description": "Iced White Tea, Fresh Ginger, Lime and Agave",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Iced Tea",
+          "price": "$4.00",
+          "description": "Freshly brewed refreshing ice-cold tea.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Lemonade",
+          "price": "$5.00",
+          "description": "Classic, refreshing house-made lemon drink.",
+          "dietary": [
+            "Vegan"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Smoothies",
+      "items": [
+        {
+          "name": "Berry Flax Smoothie",
+          "price": "$7.00",
+          "description": "A bright blend of strawberry, banana, flax seed, and oat milk.",
+          "dietary": [
+            "Vegan",
+            "Gluten-Free"
+          ]
+        },
+        {
+          "name": "Blind Date",
+          "price": "$7.00",
+          "description": "Dates, banana, raw cacao, almond milk.",
+          "dietary": [
+            "Vegan",
+            "Gluten-Free"
+          ]
+        },
+        {
+          "name": "Chia Berry",
+          "price": "$7.00",
+          "description": "Blueberry, banana, chia seeds, almond milk.",
+          "dietary": [
+            "Vegan",
+            "Gluten-Free"
+          ]
+        },
+        {
+          "name": "Heartbeet",
+          "price": "$7.00",
+          "description": "Strawberry, beet, banana.",
+          "dietary": [
+            "Vegan",
+            "Gluten-Free"
+          ]
+        },
+        {
+          "name": "Sunshine",
+          "price": "$7.00",
+          "description": "Banana, pineapple, turmeric, coconut milk.",
+          "dietary": [
+            "Vegan",
+            "Gluten-Free"
+          ]
+        },
+        {
+          "name": "Tropikale",
+          "price": "$7.00",
+          "description": "Pineapple, banana, kale, coconut milk.",
+          "dietary": [
+            "Vegan",
+            "Gluten-Free"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Soups",
+      "items": [
+        {
+          "name": "Soup of The Day",
+          "price": "$4.25",
+          "description": "Homemade vegan soup with fresh ingredients. No preservatives.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Soup Quart To Go",
+          "price": "$11.00",
+          "description": "A large 32oz container of our soup of the day to enjoy at home.",
+          "dietary": [
+            "Vegan"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Sweets",
+      "items": [
+        {
+          "name": "Banana Bread Mini Loaf Vegan",
+          "price": "$4.95",
+          "description": "Vegan.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Baked Good Special",
+          "price": "$5.50",
+          "description": "Baked good special changes daily. Call or check our facebook to see what it is.",
+          "dietary": [
+            "Vegan"
+          ]
+        },
+        {
+          "name": "Peanut Butter Chocolate Chip Vegan Muffin",
+          "price": "$1.95",
+          "description": "Vegan.",
+          "dietary": [
+            "Vegan"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Shop",
+      "items": [
+        {
+          "name": "Reusable Straws",
+          "price": "$2.00",
+          "description": "Eco-friendly metal straws for zero-waste sipping.",
+          "dietary": []
+        },
+        {
+          "name": "Sage Small",
+          "price": "$3.00",
+          "description": "A mini smudge stick of ethically harvested sage.",
+          "dietary": []
+        },
+        {
+          "name": "Sage Large",
+          "price": "$5.00",
+          "description": "A large, fragrant bundle of clearing sage.",
+          "dietary": []
+        },
+        {
+          "name": "Buddha",
+          "price": "$2.50",
+          "description": "A small, calming ornamental Buddha figure.",
+          "dietary": []
+        },
+        {
+          "name": "Incense",
+          "price": "$2.00",
+          "description": "Hand-rolled incense sticks in various soothing scents.",
+          "dietary": []
+        },
+        {
+          "name": "Shower Burst 2 Pack",
+          "price": "$13.95",
+          "description": "Aromatherapy tabs to turn your shower into a spa experience.",
+          "dietary": []
+        },
+        {
+          "name": "Tea Infusers or Tea Bag Press",
+          "price": "$5.00",
+          "description": "Reusable tea infuser for loose tea replaces tea bags.",
+          "dietary": []
+        },
+        {
+          "name": "Bandanas",
+          "price": "$2.50",
+          "description": "Bandana",
+          "dietary": []
+        },
+        {
+          "name": "Candle with Pendant",
+          "price": "$12.00",
+          "description": "A delightful wax candle revealing a hidden pendant piece.",
+          "dietary": []
+        }
+      ]
+    }
+  ]
+}
