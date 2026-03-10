@@ -68,7 +68,7 @@ export default function Home() {
                         className="w-full relative rounded-2xl md:rounded-[2rem] overflow-hidden bg-stone-200 aspect-[4/5] md:aspect-video lg:aspect-[21/9]"
                     >
                         <img
-                            src="/assets/vibe1.png"
+                            src={`${import.meta.env.BASE_URL}assets/vibe1.png`}
                             alt="Green Witch Cafe Interior"
                             className="absolute inset-0 w-full h-full object-cover"
                             loading="eager"
@@ -121,7 +121,7 @@ export default function Home() {
                             <div className="w-full relative border border-brand-text/40 p-1.5 bg-brand-secondary/10">
                                 <div className="aspect-[4/5] w-full relative overflow-hidden">
                                     <img
-                                        src="/assets/vibe2.png"
+                                        src={`${import.meta.env.BASE_URL}assets/vibe2.png`}
                                         alt="Green Witch Cafe Boutique"
                                         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                                         loading="lazy"
@@ -151,7 +151,7 @@ export default function Home() {
                                 <div className="w-full relative border border-brand-text/40 p-1.5 bg-brand-secondary/10">
                                     <div className="aspect-square w-full relative overflow-hidden">
                                         <img
-                                            src="/assets/sandwich.png"
+                                            src={`${import.meta.env.BASE_URL}assets/sandwich.png`}
                                             alt="Signature Sandwich"
                                             className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                                             loading="lazy"
@@ -187,10 +187,10 @@ export default function Home() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 lg:gap-12">
 
                         {/* Card 1: Menu */}
-                        <a href="/menu" className="group block relative w-full aspect-[3/2] md:aspect-[4/5]">
+                        <a href="#/menu" className="group block relative w-full aspect-[3/2] md:aspect-[4/5]">
                             <div className="absolute inset-0 overflow-hidden bg-stone-800">
                                 <img
-                                    src="/assets/menu.png"
+                                    src={`${import.meta.env.BASE_URL}assets/menu.png`}
                                     alt="Our Menus"
                                     className="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-[1.5s] ease-out"
                                     loading="lazy"
@@ -228,7 +228,7 @@ export default function Home() {
                         <a href="https://facebook.com/greenwitchcafe" target="_blank" rel="noopener noreferrer" className="group block relative w-full aspect-[3/2] md:aspect-[4/5]">
                             <div className="absolute inset-0 overflow-hidden bg-stone-800">
                                 <img
-                                    src="/assets/Specials.jpg"
+                                    src={`${import.meta.env.BASE_URL}assets/Specials.jpg`}
                                     alt="Daily Specials"
                                     className="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-[1.5s] ease-out"
                                     loading="lazy"
@@ -263,10 +263,10 @@ export default function Home() {
                         </a>
 
                         {/* Card 3: Gift Shop */}
-                        <a href="/menu?tab=gift-shop" className="group block relative w-full aspect-[3/2] md:aspect-[4/5]">
+                        <a href="#/menu?tab=gift-shop" className="group block relative w-full aspect-[3/2] md:aspect-[4/5]">
                             <div className="absolute inset-0 overflow-hidden bg-stone-800">
                                 <img
-                                    src="/assets/vibe4.png"
+                                    src={`${import.meta.env.BASE_URL}assets/vibe4.png`}
                                     alt="Our Gift Shop"
                                     className="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-[1.5s] ease-out"
                                     loading="lazy"

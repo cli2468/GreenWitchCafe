@@ -167,7 +167,7 @@ export default function Layout({ children }) {
                     {/* Middle Column: Name & Socials */}
                     <div className="flex flex-col items-center justify-center gap-6">
                         <img
-                            src="/assets/logo-no-text.png"
+                            src={`${import.meta.env.BASE_URL}assets/logo-no-text.png`}
                             alt="Green Witch Cafe Logo"
                             className="h-32 md:h-48 w-auto object-contain mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
                         />
