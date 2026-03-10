@@ -58,7 +58,7 @@ export default function Home() {
     return (
         <div className="w-full overflow-x-hidden">
             {/* Dark Green Background Wrapper for Hero and Nav Area */}
-            <div className="w-full bg-brand-primary pt-28 pb-4">
+            <div className="w-full bg-brand-primary pt-12 md:pt-10 pb-4">
                 {/* Hero Section - Framed Image Layout without text */}
                 <section className="px-6 md:px-8 pb-12 max-w-[1600px] mx-auto">
                     <motion.div

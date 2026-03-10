@@ -44,7 +44,7 @@ export default function Layout({ children }) {
                 className={`fixed top-0 inset-x-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex justify-between items-center px-6 md:px-12 bg-brand-primary ${isMobileMenuOpen ? 'z-[110]' : 'z-50'
                     } ${scrolled && !isMobileMenuOpen
                         ? 'shadow-[0_8px_30px_rgba(15,30,20,0.6)] py-4'
-                        : 'py-8'
+                        : 'py-6'
                     }`}
             >
                 {/* Desktop Left Nav */}
@@ -149,7 +149,7 @@ export default function Layout({ children }) {
                 )}
             </AnimatePresence>
 
-            <main className="flex-1 flex flex-col pt-24">
+            <main className="flex-1 flex flex-col pt-20">
                 {children}
             </main>
 
