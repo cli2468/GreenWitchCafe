@@ -39,7 +39,7 @@ jobs:
         run: npm install
         working-directory: cafe-frontend
       - name: Build
-        run: npm run build
+        run: npm run build -- --base=/GreenWitchCafe/
         working-directory: cafe-frontend
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
