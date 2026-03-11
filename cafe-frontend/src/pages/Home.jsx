@@ -468,8 +468,8 @@ export default function Home() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="group block relative w-full aspect-[3/2] md:aspect-[4/5]"
-                            initial={{ opacity: 0, x: 60, y: 20 }}
-                            whileInView={{ opacity: 1, x: 0, y: 0 }}
+                            initial={{ opacity: 0, x: 60 }}
+                            whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true, margin: '-50px' }}
                             transition={{ duration: 0.7, delay: 0.2, ease: [0.645, 0.045, 0.355, 1] }}
                         >
@@ -519,8 +519,8 @@ export default function Home() {
                         <motion.a
                             href="#/menu?tab=gift-shop"
                             className="group block relative w-full aspect-[3/2] md:aspect-[4/5]"
-                            initial={{ opacity: 0, x: 60, y: 20 }}
-                            whileInView={{ opacity: 1, x: 0, y: 0 }}
+                            initial={{ opacity: 0, x: 60 }}
+                            whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true, margin: '-50px' }}
                             transition={{ duration: 0.7, delay: 0.4, ease: [0.645, 0.045, 0.355, 1] }}
                         >
