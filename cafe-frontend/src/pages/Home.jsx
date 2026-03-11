@@ -49,42 +49,60 @@ const InfiniteCarousel = ({ items, count, renderFrame }) => {
     const scrollRef = useRef(null);
     const isJumping = useRef(false);
 
+    // On mount, scroll to first item of the middle set (no left peek)
     useEffect(() => {
         const el = scrollRef.current;
         if (!el) return;
-        // Scroll to the start of the middle (2nd) set without animation
         requestAnimationFrame(() => {
             const children = el.children;
             if (children.length > count) {
-                const target = children[count]; // first item of middle set
+                const target = children[count];
+                // Position so the first middle-set item is centered
+                el.style.scrollBehavior = 'auto';
                 el.scrollLeft = target.offsetLeft - (el.offsetWidth - target.offsetWidth) / 2;
+                el.style.scrollBehavior = '';
             }
         });
     }, [count]);
 
-    const handleScroll = useCallback(() => {
+    // Use scrollend (with timeout fallback) for seamless looping
+    useEffect(() => {
         const el = scrollRef.current;
-        if (!el || isJumping.current) return;
+        if (!el) return;
 
-        const { scrollLeft, scrollWidth, clientWidth } = el;
-        const oneSetWidth = scrollWidth / 3;
+        let scrollTimer = null;
 
-        // If scrolled into the 3rd set, jump back to 2nd set equivalent
-        if (scrollLeft >= oneSetWidth * 2) {
-            isJumping.current = true;
-            el.style.scrollBehavior = 'auto';
-            el.scrollLeft = scrollLeft - oneSetWidth;
-            el.style.scrollBehavior = '';
-            requestAnimationFrame(() => { isJumping.current = false; });
-        }
-        // If scrolled into the 1st set, jump forward to 2nd set equivalent
-        else if (scrollLeft <= 0) {
-            isJumping.current = true;
-            el.style.scrollBehavior = 'auto';
-            el.scrollLeft = scrollLeft + oneSetWidth;
-            el.style.scrollBehavior = '';
-            requestAnimationFrame(() => { isJumping.current = false; });
-        }
+        const checkBounds = () => {
+            if (isJumping.current) return;
+            const { scrollLeft, scrollWidth } = el;
+            const oneSetWidth = scrollWidth / 3;
+            const tolerance = 50;
+
+            if (scrollLeft >= oneSetWidth * 2 - tolerance) {
+                isJumping.current = true;
+                el.style.scrollBehavior = 'auto';
+                el.scrollLeft = scrollLeft - oneSetWidth;
+                el.style.scrollBehavior = '';
+                requestAnimationFrame(() => { isJumping.current = false; });
+            } else if (scrollLeft <= tolerance) {
+                isJumping.current = true;
+                el.style.scrollBehavior = 'auto';
+                el.scrollLeft = scrollLeft + oneSetWidth;
+                el.style.scrollBehavior = '';
+                requestAnimationFrame(() => { isJumping.current = false; });
+            }
+        };
+
+        const onScroll = () => {
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(checkBounds, 120);
+        };
+
+        el.addEventListener('scroll', onScroll, { passive: true });
+        return () => {
+            el.removeEventListener('scroll', onScroll);
+            clearTimeout(scrollTimer);
+        };
     }, []);
 
     return (
@@ -92,7 +110,6 @@ const InfiniteCarousel = ({ items, count, renderFrame }) => {
             ref={scrollRef}
             className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 px-[14%]"
             style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
-            onScroll={handleScroll}
         >
             {items.map((item, i) => renderFrame(item, i))}
         </div>
@@ -113,14 +130,14 @@ export default function Home() {
     return (
         <div className="w-full overflow-x-hidden">
             {/* Dark Green Background Wrapper for Hero and Nav Area */}
-            <div className="w-full bg-brand-primary pt-12 md:pt-10 pb-4">
+            <div className="w-full bg-brand-primary pt-0 md:pt-10 pb-0 md:pb-4">
                 {/* Hero Section - Framed Image Layout without text */}
-                <section className="px-6 md:px-8 pb-12 max-w-[1600px] mx-auto">
+                <section className="px-0 md:px-8 pb-0 md:pb-12 max-w-[1600px] mx-auto">
                     <motion.div
                         initial={{ clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" }}
                         animate={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}
                         transition={{ duration: 0.8, delay: 0.1, ease: [0.66, 0, 0.33, 1] }}
-                        className="w-full relative rounded-2xl md:rounded-[2rem] overflow-hidden bg-stone-200 aspect-[4/5] md:aspect-video lg:aspect-[21/9]"
+                        className="w-full relative rounded-none md:rounded-[2rem] overflow-hidden bg-stone-200 aspect-[3/4] md:aspect-video lg:aspect-[21/9]"
                     >
                         <img
                             src={`${import.meta.env.BASE_URL}assets/vibe1.png`}
@@ -134,9 +151,10 @@ export default function Home() {
                 </section>
             </div>
 
-            {/* Dishoom-inspired Story Section */}
-            <section id="story" ref={storyRef} className="bg-brand-secondary/10 text-brand-text w-full pt-16 pb-32 px-6 md:px-12 border-t border-brand-text/10">
-                <div className="max-w-[1400px] mx-auto">
+            {/* Original Story Section (Hidden per user request, prefer Variant B) */}
+            {false && (
+                <section className="bg-brand-secondary/10 text-brand-text w-full pt-16 pb-32 px-6 md:px-12 border-t border-brand-text/10">
+                    <div className="max-w-[1400px] mx-auto">
 
                     {/* Big Quote Headline */}
                     <div className="mb-24 max-w-5xl">
@@ -228,10 +246,11 @@ export default function Home() {
 
                     </div>
                 </div>
-            </section>
+                </section>
+            )}
 
             {/* ═══════ Story Variant B — Dishoom "Bombay Comfort Food" Style ═══════ */}
-            <section className="bg-brand-bg text-brand-text w-full py-16 md:py-20 px-6 md:px-12 border-t border-brand-text/10">
+            <section id="story" ref={storyRef} className="bg-brand-bg text-brand-text w-full py-16 md:py-20 px-6 md:px-12 border-t border-brand-text/10">
                 <div className="max-w-[1400px] mx-auto">
 
                     {/* Desktop: 2-Column Grid (Text Left, Images Right) */}
@@ -254,7 +273,7 @@ export default function Home() {
                             </h2>
 
                             {/* Body Paragraphs — Justified like Dishoom */}
-                            <div className="font-serif text-lg md:text-xl leading-[1.8] md:leading-[1.9] text-brand-text/90 text-justify space-y-6">
+                            <div className="font-serif text-xl md:text-xl leading-[1.8] md:leading-[1.9] text-brand-text/90 text-justify space-y-6">
                                 <p>
                                     Walk through our doors on Highway Ave and let the outside world dissolve. The scent of sage and fresh-ground espresso mingles in the air, soft music invites you to stay a while. This is The Green Witch Cafe — a plant-forward sanctuary in the heart of Highland.
                                 </p>
@@ -393,7 +412,14 @@ export default function Home() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 lg:gap-12">
 
                         {/* Card 1: Menu */}
-                        <a href="#/menu" className="group block relative w-full aspect-[3/2] md:aspect-[4/5]">
+                        <motion.a
+                            href="#/menu"
+                            className="group block relative w-full aspect-[3/2] md:aspect-[4/5]"
+                            initial={{ opacity: 0, x: 80 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true, margin: '-50px' }}
+                            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                        >
                             <div className="absolute inset-0 overflow-hidden bg-stone-800">
                                 <img
                                     src={`${import.meta.env.BASE_URL}assets/menu.png`}
@@ -428,10 +454,19 @@ export default function Home() {
                                     </div>
                                 </div>
                             </div>
-                        </a>
+                        </motion.a>
 
                         {/* Card 2: Specials */}
-                        <a href="https://facebook.com/greenwitchcafe" target="_blank" rel="noopener noreferrer" className="group block relative w-full aspect-[3/2] md:aspect-[4/5]">
+                        <motion.a
+                            href="https://facebook.com/greenwitchcafe"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group block relative w-full aspect-[3/2] md:aspect-[4/5]"
+                            initial={{ opacity: 0, x: 80 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true, margin: '-50px' }}
+                            transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                        >
                             <div className="absolute inset-0 overflow-hidden bg-stone-800">
                                 <img
                                     src={`${import.meta.env.BASE_URL}assets/Specials.jpg`}
@@ -466,10 +501,17 @@ export default function Home() {
                                     </div>
                                 </div>
                             </div>
-                        </a>
+                        </motion.a>
 
                         {/* Card 3: Gift Shop */}
-                        <a href="#/menu?tab=gift-shop" className="group block relative w-full aspect-[3/2] md:aspect-[4/5]">
+                        <motion.a
+                            href="#/menu?tab=gift-shop"
+                            className="group block relative w-full aspect-[3/2] md:aspect-[4/5]"
+                            initial={{ opacity: 0, x: 80 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true, margin: '-50px' }}
+                            transition={{ duration: 0.6, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                        >
                             <div className="absolute inset-0 overflow-hidden bg-stone-800">
                                 <img
                                     src={`${import.meta.env.BASE_URL}assets/vibe4.png`}
@@ -504,7 +546,7 @@ export default function Home() {
                                     </div>
                                 </div>
                             </div>
-                        </a>
+                        </motion.a>
 
                     </div>
                 </div>

@@ -6,6 +6,8 @@ export default function Layout({ children }) {
     const [scrolled, setScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const location = useLocation();
+    const isHome = location.pathname === '/';
+    const navTransparent = isHome && !scrolled && !isMobileMenuOpen;
 
     useEffect(() => {
         const handleScroll = () => {
@@ -41,38 +43,58 @@ export default function Layout({ children }) {
     return (
         <div className="flex flex-col min-h-[100dvh]">
             <header
-                className={`fixed top-0 inset-x-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex justify-between items-center px-6 md:px-12 bg-brand-primary ${isMobileMenuOpen ? 'z-[110]' : 'z-50'
+                className={`fixed top-0 inset-x-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex justify-between items-center px-6 md:px-12 ${isMobileMenuOpen ? 'z-[110]' : 'z-50'
                     } ${scrolled && !isMobileMenuOpen
-                        ? 'shadow-[0_8px_30px_rgba(15,30,20,0.6)] py-4'
-                        : 'py-6'
+                        ? 'bg-brand-primary shadow-[0_8px_30px_rgba(15,30,20,0.6)] py-4'
+                        : isHome
+                            ? 'bg-transparent md:bg-brand-primary py-6'
+                            : 'bg-brand-primary py-6'
                     }`}
             >
                 {/* Desktop Left Nav */}
-                <nav className="hidden md:flex flex-1 justify-start gap-10 text-sm font-medium tracking-widest text-brand-bg uppercase">
-                    <Link to="/menu" className="hover:opacity-70 transition-opacity">Menu</Link>
-                    <a href="#/" onClick={(e) => { e.preventDefault(); document.getElementById('story')?.scrollIntoView({ behavior: 'smooth' }); }} className="hover:opacity-70 transition-opacity cursor-pointer">Our Story</a>
+                <nav className={`hidden md:flex flex-1 justify-start gap-10 text-sm font-medium tracking-widest uppercase ${navTransparent ? 'text-brand-text' : 'text-brand-bg'}`}>
+                    {location.pathname === '/menu' ? (
+                        <Link to="/" className="hover:opacity-70 transition-opacity flex items-center gap-2">
+                            <span>&larr;</span> Back to Home
+                        </Link>
+                    ) : (
+                        <>
+                            <Link to="/menu" className="hover:opacity-70 transition-opacity">Menu</Link>
+                            <a href="#/" onClick={(e) => { e.preventDefault(); document.getElementById('story')?.scrollIntoView({ behavior: 'smooth' }); }} className="hover:opacity-70 transition-opacity cursor-pointer">Our Story</a>
+                        </>
+                    )}
                 </nav>
 
                 {/* Title Name (Mobile Left, Desktop Center) */}
                 <Link to="/" className="flex-1 md:flex-none text-left md:text-center transition-transform duration-500 md:mx-4">
-                    <h1 className={`font-serif font-bold tracking-widest leading-[1.1] text-brand-bg uppercase transition-all duration-300 ${scrolled && !isMobileMenuOpen ? 'text-xl md:text-3xl' : 'text-2xl md:text-4xl'}`}>
+                    <h1 className={`font-serif font-bold tracking-widest leading-[1.1] uppercase transition-all duration-300 ${navTransparent ? 'text-brand-text' : 'text-brand-bg'} ${scrolled && !isMobileMenuOpen ? 'text-xl md:text-3xl' : 'text-2xl md:text-4xl'}`}>
                         The Green<br className="md:hidden" /> Witch Cafe
                     </h1>
                 </Link>
 
                 {/* Desktop Right Nav & CTA */}
-                <div className="hidden md:flex flex-1 justify-end items-center gap-10 text-sm font-medium tracking-widest text-brand-bg uppercase">
-                    <a href="#/" onClick={(e) => { e.preventDefault(); document.getElementById('hours')?.scrollIntoView({ behavior: 'smooth' }); }} className="hover:opacity-70 transition-opacity cursor-pointer">Hours</a>
+                <div className={`hidden md:flex flex-1 justify-end items-center gap-10 text-sm font-medium tracking-widest uppercase ${navTransparent ? 'text-brand-text' : 'text-brand-bg'}`}>
+                    {location.pathname !== '/menu' && (
+                        <a href="#/" onClick={(e) => { e.preventDefault(); document.getElementById('hours')?.scrollIntoView({ behavior: 'smooth' }); }} className="hover:opacity-70 transition-opacity cursor-pointer">Hours</a>
+                    )}
                     <a href="https://order.online/store/the-green-witch-cafe-highland-1441314?pickup=true" target="_blank" rel="noopener noreferrer" className="border border-brand-accent bg-brand-accent text-brand-bg px-8 py-2.5 text-sm font-bold uppercase tracking-widest transition-colors duration-300 hover:bg-transparent hover:text-brand-accent">
                         Order Now
                     </a>
                 </div>
 
-                {/* Mobile Right Toggle */}
-                <div className="flex flex-1 justify-end md:hidden">
+                {/* Mobile Right: CTA + Toggle */}
+                <div className="flex flex-1 justify-end items-center gap-4 md:hidden">
+                    <a
+                        href="https://order.online/store/the-green-witch-cafe-highland-1441314?pickup=true"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`text-sm font-medium tracking-widest uppercase hover:opacity-70 transition-opacity ${navTransparent ? 'text-brand-text' : 'text-brand-bg'}`}
+                    >
+                        Order
+                    </a>
                     <button
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        className="text-brand-bg transition-transform active:scale-95 p-2 -mr-2 relative z-50"
+                        className={`transition-transform active:scale-95 p-2 -mr-2 relative z-50 ${navTransparent ? 'text-brand-text' : 'text-brand-bg'}`}
                         aria-label="Toggle Menu"
                     >
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -96,12 +118,15 @@ export default function Layout({ children }) {
                     >
 
                         <nav className="flex flex-col items-center justify-center gap-10 flex-1 w-full text-center">
-                            {[
-                                { path: '/', label: 'Home' },
-                                { path: '/menu', label: 'Menu' },
-                                { path: '#story', label: 'Our Story', isAnchor: true },
-                                { path: '#hours', label: 'Hours', isAnchor: true }
-                            ].map((item, index) => (
+                            {(location.pathname === '/menu' 
+                                ? [{ path: '/', label: 'Home' }] 
+                                : [
+                                    { path: '/', label: 'Home' },
+                                    { path: '/menu', label: 'Menu' },
+                                    { path: '#story', label: 'Our Story', isAnchor: true },
+                                    { path: '#hours', label: 'Hours', isAnchor: true }
+                                ]
+                            ).map((item, index) => (
                                 <motion.div
                                     key={item.path}
                                     initial={{ opacity: 0, y: 30 }}
@@ -155,7 +180,7 @@ export default function Layout({ children }) {
                 )}
             </AnimatePresence>
 
-            <main className="flex-1 flex flex-col pt-20">
+            <main className={`flex-1 flex flex-col ${isHome ? 'pt-0 md:pt-20' : 'pt-20'}`}>
                 {children}
             </main>
 
