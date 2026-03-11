@@ -6,6 +6,7 @@ html,
 body {
     background-color: theme('colors.brand.bg');
     color: theme('colors.brand.text');
+    overflow-x: hidden;
 }
 
 /* Custom scrollbar to keep layout clean */

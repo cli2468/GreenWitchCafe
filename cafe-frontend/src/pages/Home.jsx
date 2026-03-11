@@ -415,10 +415,10 @@ export default function Home() {
                         <motion.a
                             href="#/menu"
                             className="group block relative w-full aspect-[3/2] md:aspect-[4/5]"
-                            initial={{ opacity: 0, x: 60, y: 20 }}
-                            whileInView={{ opacity: 1, x: 0, y: 0 }}
+                            initial={{ opacity: 0, x: 60 }}
+                            whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true, margin: '-50px' }}
-                            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                            transition={{ duration: 0.7, delay: 0, ease: [0.645, 0.045, 0.355, 1] }}
                         >
                             <div className="absolute inset-0 overflow-hidden bg-stone-800">
                                 <img
@@ -429,7 +429,13 @@ export default function Home() {
                                 />
                             </div>
                             {/* Inner Box */}
-                            <div className="absolute bottom-6 -right-6 w-[88%] md:w-auto md:bottom-6 md:left-6 md:right-6 mix-blend-normal z-10 transition-transform duration-500 ease-out md:group-hover:-translate-y-2">
+                            <motion.div
+                                className="absolute bottom-6 -right-6 w-[88%] md:w-auto md:bottom-6 md:left-6 md:right-6 mix-blend-normal z-10 transition-transform duration-500 ease-out md:group-hover:-translate-y-2"
+                                initial={{ opacity: 0, x: 40 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true, margin: '-50px' }}
+                                transition={{ duration: 0.6, delay: 0.1, ease: [0.645, 0.045, 0.355, 1] }}
+                            >
                                 <div className="w-full bg-brand-bg border-y border-l border-r-0 md:border-r border-brand-text shadow-2xl relative p-1.5 pr-0 md:pr-1.5">
                                     <div className="border-y border-l border-r-0 md:border-r border-brand-text/30 py-3 md:py-6 pr-8 pl-4 md:px-6 flex flex-col justify-center text-center">
                                         <h3 className="font-serif font-bold text-xl md:text-2xl tracking-[0.2em] text-brand-text uppercase mb-1 md:mb-2">Menus</h3>
@@ -453,7 +459,7 @@ export default function Home() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         </motion.a>
 
                         {/* Card 2: Specials */}
@@ -465,7 +471,7 @@ export default function Home() {
                             initial={{ opacity: 0, x: 60, y: 20 }}
                             whileInView={{ opacity: 1, x: 0, y: 0 }}
                             viewport={{ once: true, margin: '-50px' }}
-                            transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                            transition={{ duration: 0.7, delay: 0.2, ease: [0.645, 0.045, 0.355, 1] }}
                         >
                             <div className="absolute inset-0 overflow-hidden bg-stone-800">
                                 <img
@@ -476,7 +482,13 @@ export default function Home() {
                                 />
                             </div>
                             {/* Inner Box */}
-                            <div className="absolute bottom-6 -right-6 w-[88%] md:w-auto md:bottom-6 md:left-6 md:right-6 mix-blend-normal z-10 transition-transform duration-500 ease-out md:group-hover:-translate-y-2">
+                            <motion.div
+                                className="absolute bottom-6 -right-6 w-[88%] md:w-auto md:bottom-6 md:left-6 md:right-6 mix-blend-normal z-10 transition-transform duration-500 ease-out md:group-hover:-translate-y-2"
+                                initial={{ opacity: 0, x: 40 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true, margin: '-50px' }}
+                                transition={{ duration: 0.6, delay: 0.3, ease: [0.645, 0.045, 0.355, 1] }}
+                            >
                                 <div className="w-full bg-brand-bg border-y border-l border-r-0 md:border-r border-brand-text shadow-2xl relative p-1.5 pr-0 md:pr-1.5">
                                     <div className="border-y border-l border-r-0 md:border-r border-brand-text/30 py-3 md:py-6 pr-8 pl-4 md:px-6 flex flex-col justify-center text-center">
                                         <h3 className="font-serif font-bold text-xl md:text-2xl tracking-[0.2em] text-brand-text uppercase mb-1 md:mb-2">Specials</h3>
@@ -500,7 +512,7 @@ export default function Home() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         </motion.a>
 
                         {/* Card 3: Gift Shop */}
@@ -510,7 +522,7 @@ export default function Home() {
                             initial={{ opacity: 0, x: 60, y: 20 }}
                             whileInView={{ opacity: 1, x: 0, y: 0 }}
                             viewport={{ once: true, margin: '-50px' }}
-                            transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                            transition={{ duration: 0.7, delay: 0.4, ease: [0.645, 0.045, 0.355, 1] }}
                         >
                             <div className="absolute inset-0 overflow-hidden bg-stone-800">
                                 <img
@@ -521,7 +533,13 @@ export default function Home() {
                                 />
                             </div>
                             {/* Inner Box */}
-                            <div className="absolute bottom-6 -right-6 w-[88%] md:w-auto md:bottom-6 md:left-6 md:right-6 mix-blend-normal z-10 transition-transform duration-500 ease-out md:group-hover:-translate-y-2">
+                            <motion.div
+                                className="absolute bottom-6 -right-6 w-[88%] md:w-auto md:bottom-6 md:left-6 md:right-6 mix-blend-normal z-10 transition-transform duration-500 ease-out md:group-hover:-translate-y-2"
+                                initial={{ opacity: 0, x: 40 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true, margin: '-50px' }}
+                                transition={{ duration: 0.6, delay: 0.5, ease: [0.645, 0.045, 0.355, 1] }}
+                            >
                                 <div className="w-full bg-brand-bg border-y border-l border-r-0 md:border-r border-brand-text shadow-2xl relative p-1.5 pr-0 md:pr-1.5">
                                     <div className="border-y border-l border-r-0 md:border-r border-brand-text/30 py-3 md:py-6 pr-8 pl-4 md:px-6 flex flex-col justify-center text-center">
                                         <h3 className="font-serif font-bold text-xl md:text-2xl tracking-[0.2em] text-brand-text uppercase mb-1 md:mb-2">Gift Shop</h3>
@@ -545,7 +563,7 @@ export default function Home() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         </motion.a>
 
                     </div>

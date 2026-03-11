@@ -40,7 +40,7 @@ export default function Layout({ children }) {
     }, [isMobileMenuOpen]);
 
     return (
-        <div className="flex flex-col min-h-[100dvh]">
+        <div className="flex flex-col min-h-[100dvh] overflow-x-hidden">
             <header
                 className={`fixed top-0 inset-x-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex justify-between items-center px-6 md:px-12 bg-brand-primary ${isMobileMenuOpen ? 'z-[110]' : 'z-50'
                     } ${scrolled && !isMobileMenuOpen
