@@ -42,8 +42,7 @@ export default function Layout({ children }) {
     return (
         <div className="flex flex-col min-h-[100dvh] overflow-x-hidden">
             <header
-                className={`fixed top-0 inset-x-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex justify-between items-center px-6 md:px-12 bg-brand-primary ${isMobileMenuOpen ? 'z-[110]' : 'z-50'
-                    } ${scrolled && !isMobileMenuOpen
+                className={`fixed top-0 inset-x-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex justify-between items-center px-6 md:px-12 bg-brand-primary z-[110] ${scrolled && !isMobileMenuOpen
                         ? 'shadow-[0_8px_30px_rgba(15,30,20,0.6)] py-4'
                         : 'py-6'
                     }`}
@@ -57,13 +56,13 @@ export default function Layout({ children }) {
                     ) : (
                         <>
                             <Link to="/menu" className="hover:opacity-70 transition-opacity">Menu</Link>
-                            <a href="#/" onClick={(e) => { e.preventDefault(); document.getElementById('story')?.scrollIntoView({ behavior: 'smooth' }); }} className="hover:opacity-70 transition-opacity cursor-pointer">Our Story</a>
+                            <a href="#/" onClick={(e) => { e.preventDefault(); document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }); }} className="hover:opacity-70 transition-opacity cursor-pointer">About Us</a>
                         </>
                     )}
                 </nav>
 
                 {/* Title Name (Mobile Left, Desktop Center) */}
-                <Link to="/" className="flex-1 md:flex-none text-left md:text-center transition-transform duration-500 md:mx-4">
+                <Link to="/" className={`flex-1 md:flex-none text-left md:text-center transition-transform duration-500 md:mx-4 ${isMobileMenuOpen ? 'opacity-0 invisible md:opacity-100 md:visible' : 'opacity-100 visible'}`}>
                     <h1 className={`font-serif font-bold tracking-widest leading-[1.1] text-brand-bg uppercase transition-all duration-300 ${scrolled && !isMobileMenuOpen ? 'text-xl md:text-3xl' : 'text-2xl md:text-4xl'}`}>
                         The Green<br className="md:hidden" /> Witch Cafe
                     </h1>
@@ -85,7 +84,7 @@ export default function Layout({ children }) {
                         href="https://order.online/store/the-green-witch-cafe-highland-1441314?pickup=true"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm font-medium tracking-widest text-brand-bg uppercase hover:opacity-70 transition-opacity"
+                        className={`text-sm font-medium tracking-widest text-brand-bg uppercase hover:opacity-70 transition-opacity ${isMobileMenuOpen ? 'opacity-0 invisible' : 'opacity-100 visible'}`}
                     >
                         Order
                     </a>
@@ -111,16 +110,16 @@ export default function Layout({ children }) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.4 }}
-                        className="fixed inset-0 z-[100] bg-brand-primary flex flex-col justify-between px-6 pb-8 pt-48"
+                        className="fixed inset-0 z-[100] bg-brand-primary flex flex-col items-center justify-center px-6"
                     >
 
-                        <nav className="flex flex-col items-center justify-center gap-10 flex-1 w-full text-center">
+                        <nav className="flex flex-col items-center justify-center gap-10 w-full text-center mt-[-8vh]">
                             {(location.pathname === '/menu' 
                                 ? [{ path: '/', label: 'Home' }] 
                                 : [
                                     { path: '/', label: 'Home' },
                                     { path: '/menu', label: 'Menu' },
-                                    { path: '#story', label: 'Our Story', isAnchor: true },
+                                    { path: '#about', label: 'About Us', isAnchor: true },
                                     { path: '#hours', label: 'Hours', isAnchor: true }
                                 ]
                             ).map((item, index) => (
@@ -166,12 +165,11 @@ export default function Layout({ children }) {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.5, duration: 0.4 }}
-                            className="w-full flex flex-col items-center gap-6 pb-6"
+                            className="w-full flex flex-col items-center mt-16"
                         >
                             <a href="https://order.online/store/the-green-witch-cafe-highland-1441314?pickup=true" target="_blank" rel="noopener noreferrer" className="w-full max-w-sm border border-brand-accent bg-brand-accent text-brand-bg px-8 py-4 text-base font-bold uppercase tracking-widest transition-colors active:bg-transparent active:text-brand-accent text-center block">
                                 Order Online Now
                             </a>
-                            <p className="text-brand-bg/60 text-xs tracking-widest uppercase">The Green Witch Cafe</p>
                         </motion.div>
                     </motion.div>
                 )}

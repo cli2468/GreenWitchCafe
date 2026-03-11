@@ -240,11 +240,11 @@ export default function Home() {
             )}
 
             {/* ═══════ Story Variant B — Dishoom "Bombay Comfort Food" Style ═══════ */}
-            <section id="story" ref={storyRef} className="bg-brand-bg text-brand-text w-full py-16 md:py-20 px-6 md:px-12 border-t border-brand-text/10">
+            <section id="about" ref={storyRef} className="bg-brand-bg text-brand-text w-full py-16 md:py-20 px-6 md:px-12 border-t border-brand-text/10">
                 <div className="max-w-[1400px] mx-auto">
 
                     {/* Desktop: 2-Column Grid (Text Left, Images Right) */}
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-20">
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-20 md:items-center">
 
                         {/* ── LEFT COLUMN: Text ── */}
                         <div className="md:col-span-5 flex flex-col">
@@ -253,17 +253,17 @@ export default function Home() {
                             <div className="w-24 h-[3px] bg-brand-accent mb-6"></div>
 
                             {/* Category Label */}
-                            <p className="font-sans text-xs md:text-sm font-bold uppercase tracking-[0.25em] text-brand-text mb-3">
+                            <p className="font-sans text-xs md:text-sm font-bold uppercase tracking-[0.25em] text-stone-900 mb-3">
                                 Plant-Forward Fare
                             </p>
 
                             {/* Headline */}
-                            <h2 className="font-serif text-3xl md:text-4xl leading-[1.3] tracking-wide text-brand-text mb-8 md:mb-10">
+                            <h2 className="font-serif font-semibold text-3xl md:text-4xl leading-[1.3] tracking-wide text-stone-900 mb-8 md:mb-10">
                                 Nourish your way through the day
                             </h2>
 
                             {/* Body Paragraphs — Justified like Dishoom */}
-                            <div className="font-serif text-xl md:text-xl leading-[1.8] md:leading-[1.9] text-brand-text/90 text-justify space-y-6">
+                            <div className="font-serif font-semibold text-xl md:text-xl leading-[1.8] md:leading-[1.9] text-stone-900/95 text-justify space-y-6">
                                 <p>
                                     Walk through our doors on Highway Ave and let the outside world dissolve. The scent of sage and fresh-ground espresso mingles in the air, soft music invites you to stay a while. This is The Green Witch Cafe — a plant-forward sanctuary in the heart of Highland.
                                 </p>
@@ -275,37 +275,61 @@ export default function Home() {
                                             { src: `${import.meta.env.BASE_URL}assets/food-sandwich.png`, caption: 'Portobello Pesto on focaccia', style: 'A' },
                                             { src: `${import.meta.env.BASE_URL}assets/food-combo.png`, caption: 'Hearty plant-forward plates', style: 'B' },
                                             { src: `${import.meta.env.BASE_URL}assets/food-drink.png`, caption: 'Fresh juices pressed to order', style: 'C' },
-                                            { src: `${import.meta.env.BASE_URL}assets/food-flatbread.png`, caption: 'Vegan flatbread with hummus', style: 'A' },
+                                            { src: `${import.meta.env.BASE_URL}assets/food-flatbread.png`, caption: 'Vegan flatbread with hummus', style: 'D' },
                                         ];
                                         // Double the items for seamless right-scroll loop
                                         const doubled = [...carouselItems, ...carouselItems];
                                         const renderFrame = (item, i) => {
                                             const img = <img src={item.src} alt={item.caption} className="w-full h-full object-cover" loading="lazy" />;
+
+                                            {/* Style A — Thin double border, both spaced from image */}
                                             if (item.style === 'A') return (
                                                 <div key={i} className="flex-shrink-0 w-[72%] snap-center">
-                                                    <div className="border border-brand-text/30">
-                                                        <div className="aspect-square overflow-hidden">{img}</div>
-                                                    </div>
-                                                    <p className="font-sans text-xs tracking-wide text-brand-text/70 mt-2 text-left">{item.caption}</p>
-                                                </div>
-                                            );
-                                            if (item.style === 'B') return (
-                                                <div key={i} className="flex-shrink-0 w-[72%] snap-center">
-                                                    <div className="border border-brand-text/30 p-1.5">
-                                                        <div className="border border-brand-text/15">
-                                                            <div className="aspect-[4/5] overflow-hidden">{img}</div>
-                                                        </div>
-                                                    </div>
-                                                    <p className="font-sans text-xs tracking-wide text-brand-text/70 mt-2 text-left">{item.caption}</p>
-                                                </div>
-                                            );
-                                            return (
-                                                <div key={i} className="flex-shrink-0 w-[72%] snap-center">
-                                                    <div className="flex">
-                                                        <div className="w-1.5 bg-brand-accent flex-shrink-0"></div>
-                                                        <div className="border-y border-r border-brand-text/30 flex-1">
+                                                    <div className="border border-black p-1">
+                                                        <div className="border border-black p-1">
                                                             <div className="aspect-square overflow-hidden">{img}</div>
                                                         </div>
+                                                    </div>
+                                                    <p className="font-sans text-xs tracking-wide text-brand-text/70 mt-2 text-left">{item.caption}</p>
+                                                </div>
+                                            );
+
+                                            {/* Style B — Thick border, spaced from image */}
+                                            if (item.style === 'B') return (
+                                                <div key={i} className="flex-shrink-0 w-[72%] snap-center">
+                                                    <div className="border-[3px] border-black p-1">
+                                                        <div className="aspect-[4/5] overflow-hidden">{img}</div>
+                                                    </div>
+                                                    <p className="font-sans text-xs tracking-wide text-brand-text/70 mt-2 text-left">{item.caption}</p>
+                                                </div>
+                                            );
+
+                                            {/* Style C — Accent bar left + borders (touches image) */}
+                                            if (item.style === 'C') return (
+                                                <div key={i} className="flex-shrink-0 w-[72%] snap-center">
+                                                    <div className="flex">
+                                                        <div className="w-2 bg-brand-accent flex-shrink-0"></div>
+                                                        <div className="border-y-2 border-r-2 border-brand-accent flex-1">
+                                                            <div className="aspect-square overflow-hidden">{img}</div>
+                                                        </div>
+                                                    </div>
+                                                    <p className="font-sans text-xs tracking-wide text-brand-text/70 mt-2 text-left">{item.caption}</p>
+                                                </div>
+                                            );
+
+                                            {/* Style D — No corners: edge borders with gaps at corners */}
+                                            return (
+                                                <div key={i} className="flex-shrink-0 w-[72%] snap-center">
+                                                    <div className="relative p-2">
+                                                        {/* Top edge */}
+                                                        <div className="absolute top-0 left-2 right-2 border-t-2 border-black"></div>
+                                                        {/* Bottom edge */}
+                                                        <div className="absolute bottom-0 left-2 right-2 border-t-2 border-black"></div>
+                                                        {/* Left edge */}
+                                                        <div className="absolute left-0 top-2 bottom-2 border-l-2 border-black"></div>
+                                                        {/* Right edge */}
+                                                        <div className="absolute right-0 top-2 bottom-2 border-r-2 border-black"></div>
+                                                        <div className="aspect-[4/5] overflow-hidden">{img}</div>
                                                     </div>
                                                     <p className="font-sans text-xs tracking-wide text-brand-text/70 mt-2 text-left">{item.caption}</p>
                                                 </div>
@@ -329,7 +353,7 @@ export default function Home() {
                             <div className="flex gap-4 mt-8">
                                 <a
                                     href="#/menu"
-                                    className="border border-brand-text text-sm font-bold uppercase tracking-widest text-brand-text px-6 py-3 hover:bg-brand-text hover:text-brand-bg transition-colors duration-300"
+                                    className="border border-brand-text text-sm font-bold uppercase tracking-widest bg-brand-text text-brand-bg md:bg-transparent md:text-brand-text px-6 py-3 md:hover:bg-brand-text md:hover:text-brand-bg md:transition-colors md:duration-300"
                                 >
                                     View Menu
                                 </a>
@@ -337,7 +361,7 @@ export default function Home() {
                                     href="https://order.online/store/the-green-witch-cafe-highland-1441314?pickup=true"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="border border-brand-text text-sm font-bold uppercase tracking-widest text-brand-text px-6 py-3 hover:bg-brand-text hover:text-brand-bg transition-colors duration-300"
+                                    className="border border-brand-accent text-sm font-bold uppercase tracking-widest bg-brand-accent text-brand-bg md:bg-transparent md:text-brand-accent px-6 py-3 md:hover:bg-brand-accent md:hover:text-brand-bg md:transition-colors md:duration-300"
                                 >
                                     Order Online
                                 </a>
@@ -347,11 +371,13 @@ export default function Home() {
                         {/* ── RIGHT COLUMN: Images (Desktop Only) ── */}
                         <div className="hidden md:flex md:col-span-7 flex-col gap-6">
 
-                            {/* Large Hero Image — Style B: Double border */}
+                            {/* Large Hero Image — Thin double border, both spaced from image */}
                             <div className="group">
-                                <div className="border border-brand-text/30 p-1.5 bg-brand-secondary/10">
-                                    <div className="aspect-[4/3] overflow-hidden">
-                                        <img src={`${import.meta.env.BASE_URL}assets/food-sandwich.png`} alt="Portobello Pesto Sandwich" className="w-full h-full object-cover" loading="lazy" />
+                                <div className="border border-black p-1">
+                                    <div className="border border-black p-1">
+                                        <div className="aspect-[4/3] overflow-hidden">
+                                            <img src={`${import.meta.env.BASE_URL}assets/food-sandwich.png`} alt="Portobello Pesto Sandwich" className="w-full h-full object-cover" loading="lazy" />
+                                        </div>
                                     </div>
                                 </div>
                                 <p className="font-sans text-xs tracking-widest uppercase mt-3 text-brand-text">
@@ -361,10 +387,10 @@ export default function Home() {
 
                             {/* Two Smaller Images Side-by-Side */}
                             <div className="grid grid-cols-2 gap-6">
-                                {/* Small Image 1 */}
+                                {/* Small Image 1 — Thick border, spaced from image */}
                                 <div>
-                                    <div className="border border-brand-text/30">
-                                        <div className="aspect-[4/3] overflow-hidden">
+                                    <div className="border-[3px] border-black p-1">
+                                        <div className="aspect-square overflow-hidden">
                                             <img src={`${import.meta.env.BASE_URL}assets/food-combo.png`} alt="Plant-forward combo plate" className="w-full h-full object-cover" loading="lazy" />
                                         </div>
                                     </div>
@@ -372,10 +398,18 @@ export default function Home() {
                                         <span className="font-extrabold">ABOVE:</span> Hearty plant-forward plates
                                     </p>
                                 </div>
-                                {/* Small Image 2 */}
+                                {/* Small Image 2 — No corners: edge borders with gaps at corners */}
                                 <div>
-                                    <div className="border border-brand-text/30">
-                                        <div className="aspect-[4/3] overflow-hidden">
+                                    <div className="relative p-2">
+                                        {/* Top edge */}
+                                        <div className="absolute top-0 left-2 right-2 border-t-2 border-black"></div>
+                                        {/* Bottom edge */}
+                                        <div className="absolute bottom-0 left-2 right-2 border-t-2 border-black"></div>
+                                        {/* Left edge */}
+                                        <div className="absolute left-0 top-2 bottom-2 border-l-2 border-black"></div>
+                                        {/* Right edge */}
+                                        <div className="absolute right-0 top-2 bottom-2 border-r-2 border-black"></div>
+                                        <div className="aspect-square overflow-hidden">
                                             <img src={`${import.meta.env.BASE_URL}assets/food-drink.png`} alt="Fresh pressed juice" className="w-full h-full object-cover object-top" loading="lazy" />
                                         </div>
                                     </div>
@@ -574,7 +608,6 @@ export default function Home() {
                                         height="100%"
                                         style={{ border: 0 }}
                                         allowFullScreen=""
-                                        loading="lazy"
                                         referrerPolicy="no-referrer-when-downgrade"
                                         title="Green Witch Cafe Location"
                                     ></iframe>
@@ -647,7 +680,6 @@ export default function Home() {
                                 height="100%"
                                 style={{ border: 0 }}
                                 allowFullScreen=""
-                                loading="lazy"
                                 referrerPolicy="no-referrer-when-downgrade"
                                 title="Green Witch Cafe Location"
                             ></iframe>
