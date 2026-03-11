@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence, useInView } from 'framer-motion';
 
 const AnimatedChar = ({ children, progress, range }) => {
     const opacity = useTransform(progress, range, [0.2, 1]);
@@ -44,28 +44,21 @@ const AccordionItem = ({ title, children }) => {
     );
 };
 
-// Infinite-scroll carousel: items are tripled, starts in middle set, jumps back seamlessly
+// Infinite-scroll carousel: items are doubled, starts at the beginning, loops right seamlessly
 const InfiniteCarousel = ({ items, count, renderFrame }) => {
     const scrollRef = useRef(null);
     const isJumping = useRef(false);
 
-    // On mount, scroll to first item of the middle set (no left peek)
+    // Start at position 0 — leftmost item, nothing on the left
     useEffect(() => {
         const el = scrollRef.current;
         if (!el) return;
-        requestAnimationFrame(() => {
-            const children = el.children;
-            if (children.length > count) {
-                const target = children[count];
-                // Position so the first middle-set item is centered
-                el.style.scrollBehavior = 'auto';
-                el.scrollLeft = target.offsetLeft - (el.offsetWidth - target.offsetWidth) / 2;
-                el.style.scrollBehavior = '';
-            }
-        });
+        el.style.scrollBehavior = 'auto';
+        el.scrollLeft = 0;
+        el.style.scrollBehavior = '';
     }, [count]);
 
-    // Use scrollend (with timeout fallback) for seamless looping
+    // When user scrolls past the first set into the duplicate, jump back
     useEffect(() => {
         const el = scrollRef.current;
         if (!el) return;
@@ -75,19 +68,14 @@ const InfiniteCarousel = ({ items, count, renderFrame }) => {
         const checkBounds = () => {
             if (isJumping.current) return;
             const { scrollLeft, scrollWidth } = el;
-            const oneSetWidth = scrollWidth / 3;
-            const tolerance = 50;
+            // First set ends at half the scroll width (since items are doubled)
+            const oneSetWidth = scrollWidth / 2;
 
-            if (scrollLeft >= oneSetWidth * 2 - tolerance) {
+            if (scrollLeft >= oneSetWidth - 10) {
+                // Scrolled into the duplicate set — jump back to equivalent spot in first set
                 isJumping.current = true;
                 el.style.scrollBehavior = 'auto';
                 el.scrollLeft = scrollLeft - oneSetWidth;
-                el.style.scrollBehavior = '';
-                requestAnimationFrame(() => { isJumping.current = false; });
-            } else if (scrollLeft <= tolerance) {
-                isJumping.current = true;
-                el.style.scrollBehavior = 'auto';
-                el.scrollLeft = scrollLeft + oneSetWidth;
                 el.style.scrollBehavior = '';
                 requestAnimationFrame(() => { isJumping.current = false; });
             }
@@ -95,7 +83,7 @@ const InfiniteCarousel = ({ items, count, renderFrame }) => {
 
         const onScroll = () => {
             clearTimeout(scrollTimer);
-            scrollTimer = setTimeout(checkBounds, 120);
+            scrollTimer = setTimeout(checkBounds, 150);
         };
 
         el.addEventListener('scroll', onScroll, { passive: true });
@@ -118,6 +106,8 @@ const InfiniteCarousel = ({ items, count, renderFrame }) => {
 
 export default function Home() {
     const storyRef = useRef(null);
+    const cardsRef = useRef(null);
+    const cardsInView = useInView(cardsRef, { once: true, margin: '-80px' });
     const { scrollYProgress } = useScroll({
         target: storyRef,
         offset: ["start 85%", "start 15%"]
@@ -287,8 +277,8 @@ export default function Home() {
                                             { src: `${import.meta.env.BASE_URL}assets/food-drink.png`, caption: 'Fresh juices pressed to order', style: 'C' },
                                             { src: `${import.meta.env.BASE_URL}assets/food-flatbread.png`, caption: 'Vegan flatbread with hummus', style: 'A' },
                                         ];
-                                        // Triple the items for infinite illusion
-                                        const tripled = [...carouselItems, ...carouselItems, ...carouselItems];
+                                        // Double the items for seamless right-scroll loop
+                                        const doubled = [...carouselItems, ...carouselItems];
                                         const renderFrame = (item, i) => {
                                             const img = <img src={item.src} alt={item.caption} className="w-full h-full object-cover" loading="lazy" />;
                                             if (item.style === 'A') return (
@@ -322,7 +312,7 @@ export default function Home() {
                                             );
                                         };
                                         return (
-                                            <InfiniteCarousel items={tripled} count={carouselItems.length} renderFrame={renderFrame} />
+                                            <InfiniteCarousel items={doubled} count={carouselItems.length} renderFrame={renderFrame} />
                                         );
                                     })()}
                                 </div>
@@ -409,16 +399,15 @@ export default function Home() {
                     </h2>
 
                     {/* 3 Column Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 lg:gap-12">
+                    <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 lg:gap-12">
 
                         {/* Card 1: Menu */}
                         <motion.a
                             href="#/menu"
                             className="group block relative w-full aspect-[3/2] md:aspect-[4/5]"
                             initial={{ opacity: 0, x: 60 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true, margin: '-50px' }}
-                            transition={{ duration: 0.7, delay: 0, ease: [0.645, 0.045, 0.355, 1] }}
+                            animate={cardsInView ? { opacity: 1, x: 0 } : {}}
+                            transition={{ duration: 1, delay: 0, ease: [0.4, 0, 0.2, 1] }}
                         >
                             <div className="absolute inset-0 overflow-hidden bg-stone-800">
                                 <img
@@ -432,9 +421,8 @@ export default function Home() {
                             <motion.div
                                 className="absolute bottom-6 -right-6 w-[88%] md:w-auto md:bottom-6 md:left-6 md:right-6 mix-blend-normal z-10 transition-transform duration-500 ease-out md:group-hover:-translate-y-2"
                                 initial={{ opacity: 0, x: 40 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true, margin: '-50px' }}
-                                transition={{ duration: 0.6, delay: 0.1, ease: [0.645, 0.045, 0.355, 1] }}
+                                animate={cardsInView ? { opacity: 1, x: 0 } : {}}
+                                transition={{ duration: 0.8, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
                             >
                                 <div className="w-full bg-brand-bg border-y border-l border-r-0 md:border-r border-brand-text shadow-2xl relative p-1.5 pr-0 md:pr-1.5">
                                     <div className="border-y border-l border-r-0 md:border-r border-brand-text/30 py-3 md:py-6 pr-8 pl-4 md:px-6 flex flex-col justify-center text-center">
@@ -469,9 +457,8 @@ export default function Home() {
                             rel="noopener noreferrer"
                             className="group block relative w-full aspect-[3/2] md:aspect-[4/5]"
                             initial={{ opacity: 0, x: 60 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true, margin: '-50px' }}
-                            transition={{ duration: 0.7, delay: 0.2, ease: [0.645, 0.045, 0.355, 1] }}
+                            animate={cardsInView ? { opacity: 1, x: 0 } : {}}
+                            transition={{ duration: 1, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
                         >
                             <div className="absolute inset-0 overflow-hidden bg-stone-800">
                                 <img
@@ -485,9 +472,8 @@ export default function Home() {
                             <motion.div
                                 className="absolute bottom-6 -right-6 w-[88%] md:w-auto md:bottom-6 md:left-6 md:right-6 mix-blend-normal z-10 transition-transform duration-500 ease-out md:group-hover:-translate-y-2"
                                 initial={{ opacity: 0, x: 40 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true, margin: '-50px' }}
-                                transition={{ duration: 0.6, delay: 0.3, ease: [0.645, 0.045, 0.355, 1] }}
+                                animate={cardsInView ? { opacity: 1, x: 0 } : {}}
+                                transition={{ duration: 0.8, delay: 0.3, ease: [0.4, 0, 0.2, 1] }}
                             >
                                 <div className="w-full bg-brand-bg border-y border-l border-r-0 md:border-r border-brand-text shadow-2xl relative p-1.5 pr-0 md:pr-1.5">
                                     <div className="border-y border-l border-r-0 md:border-r border-brand-text/30 py-3 md:py-6 pr-8 pl-4 md:px-6 flex flex-col justify-center text-center">
@@ -520,9 +506,8 @@ export default function Home() {
                             href="#/menu?tab=gift-shop"
                             className="group block relative w-full aspect-[3/2] md:aspect-[4/5]"
                             initial={{ opacity: 0, x: 60 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true, margin: '-50px' }}
-                            transition={{ duration: 0.7, delay: 0.4, ease: [0.645, 0.045, 0.355, 1] }}
+                            animate={cardsInView ? { opacity: 1, x: 0 } : {}}
+                            transition={{ duration: 1, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}
                         >
                             <div className="absolute inset-0 overflow-hidden bg-stone-800">
                                 <img
@@ -536,9 +521,8 @@ export default function Home() {
                             <motion.div
                                 className="absolute bottom-6 -right-6 w-[88%] md:w-auto md:bottom-6 md:left-6 md:right-6 mix-blend-normal z-10 transition-transform duration-500 ease-out md:group-hover:-translate-y-2"
                                 initial={{ opacity: 0, x: 40 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true, margin: '-50px' }}
-                                transition={{ duration: 0.6, delay: 0.5, ease: [0.645, 0.045, 0.355, 1] }}
+                                animate={cardsInView ? { opacity: 1, x: 0 } : {}}
+                                transition={{ duration: 0.8, delay: 0.5, ease: [0.4, 0, 0.2, 1] }}
                             >
                                 <div className="w-full bg-brand-bg border-y border-l border-r-0 md:border-r border-brand-text shadow-2xl relative p-1.5 pr-0 md:pr-1.5">
                                     <div className="border-y border-l border-r-0 md:border-r border-brand-text/30 py-3 md:py-6 pr-8 pl-4 md:px-6 flex flex-col justify-center text-center">
