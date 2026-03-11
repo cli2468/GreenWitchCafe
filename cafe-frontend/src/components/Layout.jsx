@@ -50,7 +50,7 @@ export default function Layout({ children }) {
                 {/* Desktop Left Nav */}
                 <nav className="hidden md:flex flex-1 justify-start gap-10 text-sm font-medium tracking-widest text-brand-bg uppercase">
                     <Link to="/menu" className="hover:opacity-70 transition-opacity">Menu</Link>
-                    <a href="/#story" className="hover:opacity-70 transition-opacity">Our Story</a>
+                    <a href="#/" onClick={(e) => { e.preventDefault(); document.getElementById('story')?.scrollIntoView({ behavior: 'smooth' }); }} className="hover:opacity-70 transition-opacity cursor-pointer">Our Story</a>
                 </nav>
 
                 {/* Title Name (Mobile Left, Desktop Center) */}
@@ -62,7 +62,7 @@ export default function Layout({ children }) {
 
                 {/* Desktop Right Nav & CTA */}
                 <div className="hidden md:flex flex-1 justify-end items-center gap-10 text-sm font-medium tracking-widest text-brand-bg uppercase">
-                    <a href="/#hours" className="hover:opacity-70 transition-opacity">Hours</a>
+                    <a href="#/" onClick={(e) => { e.preventDefault(); document.getElementById('hours')?.scrollIntoView({ behavior: 'smooth' }); }} className="hover:opacity-70 transition-opacity cursor-pointer">Hours</a>
                     <a href="https://order.online/store/the-green-witch-cafe-highland-1441314?pickup=true" target="_blank" rel="noopener noreferrer" className="border border-brand-accent bg-brand-accent text-brand-bg px-8 py-2.5 text-sm font-bold uppercase tracking-widest transition-colors duration-300 hover:bg-transparent hover:text-brand-accent">
                         Order Now
                     </a>
@@ -99,8 +99,8 @@ export default function Layout({ children }) {
                             {[
                                 { path: '/', label: 'Home' },
                                 { path: '/menu', label: 'Menu' },
-                                { path: '/#story', label: 'Our Story', isAnchor: true },
-                                { path: '/#hours', label: 'Hours', isAnchor: true }
+                                { path: '#story', label: 'Our Story', isAnchor: true },
+                                { path: '#hours', label: 'Hours', isAnchor: true }
                             ].map((item, index) => (
                                 <motion.div
                                     key={item.path}
@@ -116,8 +116,14 @@ export default function Layout({ children }) {
                                 >
                                     {item.isAnchor ? (
                                         <a
-                                            href={item.path}
-                                            onClick={() => setIsMobileMenuOpen(false)}
+                                            href="#"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setIsMobileMenuOpen(false);
+                                                setTimeout(() => {
+                                                    document.getElementById(item.path.replace('#', ''))?.scrollIntoView({ behavior: 'smooth' });
+                                                }, 400);
+                                            }}
                                             className={`font-serif text-5xl text-brand-bg tracking-wide block transition-opacity hover:opacity-70`}
                                         >
                                             {item.label}

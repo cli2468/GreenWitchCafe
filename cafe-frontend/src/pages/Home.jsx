@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
 const AnimatedChar = ({ children, progress, range }) => {
@@ -40,6 +40,61 @@ const AccordionItem = ({ title, children }) => {
                     </motion.div>
                 )}
             </AnimatePresence>
+        </div>
+    );
+};
+
+// Infinite-scroll carousel: items are tripled, starts in middle set, jumps back seamlessly
+const InfiniteCarousel = ({ items, count, renderFrame }) => {
+    const scrollRef = useRef(null);
+    const isJumping = useRef(false);
+
+    useEffect(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        // Scroll to the start of the middle (2nd) set without animation
+        requestAnimationFrame(() => {
+            const children = el.children;
+            if (children.length > count) {
+                const target = children[count]; // first item of middle set
+                el.scrollLeft = target.offsetLeft - (el.offsetWidth - target.offsetWidth) / 2;
+            }
+        });
+    }, [count]);
+
+    const handleScroll = useCallback(() => {
+        const el = scrollRef.current;
+        if (!el || isJumping.current) return;
+
+        const { scrollLeft, scrollWidth, clientWidth } = el;
+        const oneSetWidth = scrollWidth / 3;
+
+        // If scrolled into the 3rd set, jump back to 2nd set equivalent
+        if (scrollLeft >= oneSetWidth * 2) {
+            isJumping.current = true;
+            el.style.scrollBehavior = 'auto';
+            el.scrollLeft = scrollLeft - oneSetWidth;
+            el.style.scrollBehavior = '';
+            requestAnimationFrame(() => { isJumping.current = false; });
+        }
+        // If scrolled into the 1st set, jump forward to 2nd set equivalent
+        else if (scrollLeft <= 0) {
+            isJumping.current = true;
+            el.style.scrollBehavior = 'auto';
+            el.scrollLeft = scrollLeft + oneSetWidth;
+            el.style.scrollBehavior = '';
+            requestAnimationFrame(() => { isJumping.current = false; });
+        }
+    }, []);
+
+    return (
+        <div
+            ref={scrollRef}
+            className="flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 px-[14%]"
+            style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
+            onScroll={handleScroll}
+        >
+            {items.map((item, i) => renderFrame(item, i))}
         </div>
     );
 };
@@ -169,6 +224,157 @@ export default function Home() {
                                 </p>
                             </div>
 
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════ Story Variant B — Dishoom "Bombay Comfort Food" Style ═══════ */}
+            <section className="bg-brand-bg text-brand-text w-full py-16 md:py-20 px-6 md:px-12 border-t border-brand-text/10">
+                <div className="max-w-[1400px] mx-auto">
+
+                    {/* Desktop: 2-Column Grid (Text Left, Images Right) */}
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-20">
+
+                        {/* ── LEFT COLUMN: Text ── */}
+                        <div className="md:col-span-5 flex flex-col">
+
+                            {/* Decorative Accent Line */}
+                            <div className="w-24 h-[3px] bg-brand-accent mb-6"></div>
+
+                            {/* Category Label */}
+                            <p className="font-sans text-xs md:text-sm font-bold uppercase tracking-[0.25em] text-brand-text mb-3">
+                                Plant-Forward Fare
+                            </p>
+
+                            {/* Headline */}
+                            <h2 className="font-serif text-3xl md:text-4xl leading-[1.3] tracking-wide text-brand-text mb-8 md:mb-10">
+                                Nourish your way through the day
+                            </h2>
+
+                            {/* Body Paragraphs — Justified like Dishoom */}
+                            <div className="font-serif text-lg md:text-xl leading-[1.8] md:leading-[1.9] text-brand-text/90 text-justify space-y-6">
+                                <p>
+                                    Walk through our doors on Highway Ave and let the outside world dissolve. The scent of sage and fresh-ground espresso mingles in the air, soft music invites you to stay a while. This is The Green Witch Cafe — a plant-forward sanctuary in the heart of Highland.
+                                </p>
+
+                                {/* Mobile-only infinite carousel — inserted between paragraphs */}
+                                <div className="md:hidden -mx-6">
+                                    {(() => {
+                                        const carouselItems = [
+                                            { src: `${import.meta.env.BASE_URL}assets/food-sandwich.png`, caption: 'Portobello Pesto on focaccia', style: 'A' },
+                                            { src: `${import.meta.env.BASE_URL}assets/food-combo.png`, caption: 'Hearty plant-forward plates', style: 'B' },
+                                            { src: `${import.meta.env.BASE_URL}assets/food-drink.png`, caption: 'Fresh juices pressed to order', style: 'C' },
+                                            { src: `${import.meta.env.BASE_URL}assets/food-flatbread.png`, caption: 'Vegan flatbread with hummus', style: 'A' },
+                                        ];
+                                        // Triple the items for infinite illusion
+                                        const tripled = [...carouselItems, ...carouselItems, ...carouselItems];
+                                        const renderFrame = (item, i) => {
+                                            const img = <img src={item.src} alt={item.caption} className="w-full h-full object-cover" loading="lazy" />;
+                                            if (item.style === 'A') return (
+                                                <div key={i} className="flex-shrink-0 w-[72%] snap-center">
+                                                    <div className="border border-brand-text/30">
+                                                        <div className="aspect-square overflow-hidden">{img}</div>
+                                                    </div>
+                                                    <p className="font-sans text-xs tracking-wide text-brand-text/70 mt-2 text-left">{item.caption}</p>
+                                                </div>
+                                            );
+                                            if (item.style === 'B') return (
+                                                <div key={i} className="flex-shrink-0 w-[72%] snap-center">
+                                                    <div className="border border-brand-text/30 p-1.5">
+                                                        <div className="border border-brand-text/15">
+                                                            <div className="aspect-[4/5] overflow-hidden">{img}</div>
+                                                        </div>
+                                                    </div>
+                                                    <p className="font-sans text-xs tracking-wide text-brand-text/70 mt-2 text-left">{item.caption}</p>
+                                                </div>
+                                            );
+                                            return (
+                                                <div key={i} className="flex-shrink-0 w-[72%] snap-center">
+                                                    <div className="flex">
+                                                        <div className="w-1.5 bg-brand-accent flex-shrink-0"></div>
+                                                        <div className="border-y border-r border-brand-text/30 flex-1">
+                                                            <div className="aspect-square overflow-hidden">{img}</div>
+                                                        </div>
+                                                    </div>
+                                                    <p className="font-sans text-xs tracking-wide text-brand-text/70 mt-2 text-left">{item.caption}</p>
+                                                </div>
+                                            );
+                                        };
+                                        return (
+                                            <InfiniteCarousel items={tripled} count={carouselItems.length} renderFrame={renderFrame} />
+                                        );
+                                    })()}
+                                </div>
+
+                                <p>
+                                    Begin with a Glow juice — turmeric, carrot, apple and ginger pressed to order — or a Golden Milk latte steamed with cinnamon. Our Portobello Pesto Sandwich layers grilled portobello, spinach and provolone on focaccia, while the Buddha Bowl brings mixed greens, grains, and seasonal vegetables.
+                                </p>
+                                <p>
+                                    Linger over a Blind Date smoothie of raw cacao and banana, or our vegan Banana Bread. Before you leave, browse sage bundles, incense, crystals, and candles in our retail nook. Every visit is an invitation to slow down.
+                                </p>
+                            </div>
+
+                            {/* CTA Buttons */}
+                            <div className="flex gap-4 mt-8">
+                                <a
+                                    href="#/menu"
+                                    className="border border-brand-text text-sm font-bold uppercase tracking-widest text-brand-text px-6 py-3 hover:bg-brand-text hover:text-brand-bg transition-colors duration-300"
+                                >
+                                    View Menu
+                                </a>
+                                <a
+                                    href="https://order.online/store/the-green-witch-cafe-highland-1441314?pickup=true"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="border border-brand-text text-sm font-bold uppercase tracking-widest text-brand-text px-6 py-3 hover:bg-brand-text hover:text-brand-bg transition-colors duration-300"
+                                >
+                                    Order Online
+                                </a>
+                            </div>
+                        </div>
+
+                        {/* ── RIGHT COLUMN: Images (Desktop Only) ── */}
+                        <div className="hidden md:flex md:col-span-7 flex-col gap-6">
+
+                            {/* Large Hero Image — Style B: Double border */}
+                            <div className="group">
+                                <div className="border border-brand-text/30 p-1.5 bg-brand-secondary/10">
+                                    <div className="aspect-[4/3] overflow-hidden">
+                                        <img src={`${import.meta.env.BASE_URL}assets/food-sandwich.png`} alt="Portobello Pesto Sandwich" className="w-full h-full object-cover" loading="lazy" />
+                                    </div>
+                                </div>
+                                <p className="font-sans text-xs tracking-widest uppercase mt-3 text-brand-text">
+                                    <span className="font-extrabold">ABOVE:</span> Portobello Pesto Sandwich on focaccia
+                                </p>
+                            </div>
+
+                            {/* Two Smaller Images Side-by-Side */}
+                            <div className="grid grid-cols-2 gap-6">
+                                {/* Small Image 1 */}
+                                <div>
+                                    <div className="border border-brand-text/30">
+                                        <div className="aspect-[4/3] overflow-hidden">
+                                            <img src={`${import.meta.env.BASE_URL}assets/food-combo.png`} alt="Plant-forward combo plate" className="w-full h-full object-cover" loading="lazy" />
+                                        </div>
+                                    </div>
+                                    <p className="font-sans text-xs tracking-widest uppercase mt-3 text-brand-text">
+                                        <span className="font-extrabold">ABOVE:</span> Hearty plant-forward plates
+                                    </p>
+                                </div>
+                                {/* Small Image 2 */}
+                                <div>
+                                    <div className="border border-brand-text/30">
+                                        <div className="aspect-[4/3] overflow-hidden">
+                                            <img src={`${import.meta.env.BASE_URL}assets/food-drink.png`} alt="Fresh pressed juice" className="w-full h-full object-cover object-top" loading="lazy" />
+                                        </div>
+                                    </div>
+                                    <p className="font-sans text-xs tracking-widest uppercase mt-3 text-brand-text">
+                                        <span className="font-extrabold">ABOVE:</span> Fresh juices pressed to order
+                                    </p>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
