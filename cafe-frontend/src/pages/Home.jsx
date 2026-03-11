@@ -130,9 +130,9 @@ export default function Home() {
     return (
         <div className="w-full overflow-x-hidden">
             {/* Dark Green Background Wrapper for Hero and Nav Area */}
-            <div className="w-full bg-brand-primary pt-0 md:pt-10 pb-0 md:pb-4">
+            <div className="w-full bg-brand-primary pt-12 md:pt-10 pb-4">
                 {/* Hero Section - Framed Image Layout without text */}
-                <section className="px-0 md:px-8 pb-0 md:pb-12 max-w-[1600px] mx-auto">
+                <section className="px-2 md:px-8 pb-12 max-w-[1600px] mx-auto">
                     <motion.div
                         initial={{ clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" }}
                         animate={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}
@@ -415,10 +415,10 @@ export default function Home() {
                         <motion.a
                             href="#/menu"
                             className="group block relative w-full aspect-[3/2] md:aspect-[4/5]"
-                            initial={{ opacity: 0, x: 80 }}
-                            whileInView={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, x: 60, y: 20 }}
+                            whileInView={{ opacity: 1, x: 0, y: 0 }}
                             viewport={{ once: true, margin: '-50px' }}
-                            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                         >
                             <div className="absolute inset-0 overflow-hidden bg-stone-800">
                                 <img
@@ -462,10 +462,10 @@ export default function Home() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="group block relative w-full aspect-[3/2] md:aspect-[4/5]"
-                            initial={{ opacity: 0, x: 80 }}
-                            whileInView={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, x: 60, y: 20 }}
+                            whileInView={{ opacity: 1, x: 0, y: 0 }}
                             viewport={{ once: true, margin: '-50px' }}
-                            transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                            transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
                         >
                             <div className="absolute inset-0 overflow-hidden bg-stone-800">
                                 <img
@@ -507,10 +507,10 @@ export default function Home() {
                         <motion.a
                             href="#/menu?tab=gift-shop"
                             className="group block relative w-full aspect-[3/2] md:aspect-[4/5]"
-                            initial={{ opacity: 0, x: 80 }}
-                            whileInView={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, x: 60, y: 20 }}
+                            whileInView={{ opacity: 1, x: 0, y: 0 }}
                             viewport={{ once: true, margin: '-50px' }}
-                            transition={{ duration: 0.6, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                            transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
                         >
                             <div className="absolute inset-0 overflow-hidden bg-stone-800">
                                 <img
