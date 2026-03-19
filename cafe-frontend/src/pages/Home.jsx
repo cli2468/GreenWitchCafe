@@ -106,6 +106,7 @@ export default function Home() {
     const galleryRef = useRef(null);
     const drinksRef = useRef(null);
     const shouldReduceMotion = useReducedMotion();
+    const [isMobileViewport, setIsMobileViewport] = useState(false);
     const cardsInView = useInView(cardsRef, { once: true, margin: '-80px' });
     const galleryInView = useInView(galleryRef, { once: true, margin: '-60px' });
     const aboutInView = useInView(storyRef, { once: true, margin: '-10% 0px -10% 0px' });
@@ -115,6 +116,24 @@ export default function Home() {
         offset: ["start 85%", "start 15%"]
     });
     const revealEase = [0.23, 1, 0.32, 1];
+    const aboutHeadlineDuration = isMobileViewport ? 0.28 : 0.32;
+    const aboutHeadlineStep = isMobileViewport ? 0.022 : 0.034;
+    const drinksHeadlineDuration = isMobileViewport ? 0.28 : 0.32;
+    const drinksHeadlineStep = isMobileViewport ? 0.022 : 0.034;
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(max-width: 767px)');
+        const syncViewport = (event) => {
+            setIsMobileViewport(event.matches);
+        };
+
+        setIsMobileViewport(mediaQuery.matches);
+        mediaQuery.addEventListener('change', syncViewport);
+
+        return () => {
+            mediaQuery.removeEventListener('change', syncViewport);
+        };
+    }, []);
 
     const line1 = "We believe in excellent food – ";
     const line2 = "that just happens to be vegan.";
@@ -288,7 +307,7 @@ export default function Home() {
                                         className="inline-block"
                                         initial={shouldReduceMotion ? { opacity: 1, filter: 'blur(0px)' } : { opacity: 0, filter: 'blur(8px)' }}
                                         animate={aboutInView ? { opacity: 1, filter: 'blur(0px)' } : {}}
-                                        transition={{ duration: 0.36, delay: 0.14 + (index * 0.042), ease: revealEase }}
+                                        transition={{ duration: aboutHeadlineDuration, delay: 0.14 + (index * aboutHeadlineStep), ease: revealEase }}
                                     >
                                         {char === ' ' ? '\u00A0' : char}
                                     </motion.span>
@@ -538,7 +557,7 @@ export default function Home() {
                                         className="inline-block"
                                         initial={shouldReduceMotion ? { opacity: 1, filter: 'blur(0px)' } : { opacity: 0, filter: 'blur(8px)' }}
                                         animate={drinksInView ? { opacity: 1, filter: 'blur(0px)' } : {}}
-                                        transition={{ duration: 0.36, delay: 0.1 + (index * 0.042), ease: revealEase }}
+                                        transition={{ duration: drinksHeadlineDuration, delay: 0.1 + (index * drinksHeadlineStep), ease: revealEase }}
                                     >
                                         {char === ' ' ? '\u00A0' : char}
                                     </motion.span>
@@ -551,7 +570,7 @@ export default function Home() {
                                         className="inline-block"
                                         initial={shouldReduceMotion ? { opacity: 1, filter: 'blur(0px)' } : { opacity: 0, filter: 'blur(8px)' }}
                                         animate={drinksInView ? { opacity: 1, filter: 'blur(0px)' } : {}}
-                                        transition={{ duration: 0.36, delay: 0.56 + (index * 0.042), ease: revealEase }}
+                                        transition={{ duration: drinksHeadlineDuration, delay: 0.44 + (index * drinksHeadlineStep), ease: revealEase }}
                                     >
                                         {char === ' ' ? '\u00A0' : char}
                                     </motion.span>
@@ -564,7 +583,7 @@ export default function Home() {
                                         className="inline-block"
                                         initial={shouldReduceMotion ? { opacity: 1, filter: 'blur(0px)' } : { opacity: 0, filter: 'blur(8px)' }}
                                         animate={drinksInView ? { opacity: 1, filter: 'blur(0px)' } : {}}
-                                        transition={{ duration: 0.36, delay: 0.94 + (index * 0.042), ease: revealEase }}
+                                        transition={{ duration: drinksHeadlineDuration, delay: 0.74 + (index * drinksHeadlineStep), ease: revealEase }}
                                     >
                                         {char === ' ' ? '\u00A0' : char}
                                     </motion.span>
