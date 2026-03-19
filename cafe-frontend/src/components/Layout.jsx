@@ -2,11 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const footerHours = [
+    { day: 'Sunday', hours: 'Closed' },
+    { day: 'Monday', hours: 'Closed' },
+    { day: 'Tuesday', hours: '9:00 AM - 4:00 PM' },
+    { day: 'Wednesday', hours: '9:00 AM - 4:00 PM' },
+    { day: 'Thursday', hours: '9:00 AM - 4:00 PM' },
+    { day: 'Friday', hours: '9:00 AM - 4:00 PM' },
+    { day: 'Saturday', hours: '9:00 AM - 4:00 PM' },
+];
+
+const footerNavItems = [
+    { label: 'Home', to: '/' },
+    { label: 'About Us', to: { pathname: '/', hash: '#about' } },
+    { label: 'Drinks Experience', to: { pathname: '/', hash: '#drinks-experience' } },
+    { label: 'Hours', to: { pathname: '/', hash: '#hours' } },
+    { label: 'Menu', to: '/menu' },
+    { label: 'Gift Shop', to: '/menu?tab=gift-shop' },
+    { label: 'Order Online', href: 'https://order.online/store/the-green-witch-cafe-highland-1441314?pickup=true' },
+];
+
 export default function Layout({ children }) {
     const [scrolled, setScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isDrinksSectionActive, setIsDrinksSectionActive] = useState(false);
+    const [isDesktop, setIsDesktop] = useState(false);
     const location = useLocation();
     const isHome = location.pathname === '/';
+    const todayIndex = new Date().getDay();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -39,24 +62,74 @@ export default function Layout({ children }) {
         return () => { document.body.style.overflow = 'unset'; }
     }, [isMobileMenuOpen]);
 
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(min-width: 768px)');
+        const syncViewport = (event) => {
+            setIsDesktop(event.matches);
+        };
+
+        setIsDesktop(mediaQuery.matches);
+        mediaQuery.addEventListener('change', syncViewport);
+
+        return () => {
+            mediaQuery.removeEventListener('change', syncViewport);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!isHome) {
+            setIsDrinksSectionActive(false);
+            return;
+        }
+
+        let observer;
+        let frame = requestAnimationFrame(() => {
+            const drinksSection = document.getElementById('drinks-experience');
+            if (!drinksSection) {
+                setIsDrinksSectionActive(false);
+                return;
+            }
+
+            observer = new IntersectionObserver(
+                ([entry]) => {
+                    setIsDrinksSectionActive(entry.isIntersecting);
+                },
+                {
+                    root: null,
+                    threshold: 0.15,
+                    rootMargin: '-96px 0px -24% 0px',
+                }
+            );
+
+            observer.observe(drinksSection);
+        });
+
+        return () => {
+            cancelAnimationFrame(frame);
+            if (observer) observer.disconnect();
+        };
+    }, [isHome]);
+
+    const shouldHideHeader = isDesktop && isHome && isDrinksSectionActive && !isMobileMenuOpen;
+
     return (
-        <div className="flex flex-col min-h-[100dvh] overflow-x-hidden">
+        <div className="flex flex-col min-h-[100dvh]" style={{ overflowX: 'clip' }}>
             <header
-                className={`fixed top-0 inset-x-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex justify-between items-center px-6 md:px-12 bg-brand-primary z-[110] ${scrolled && !isMobileMenuOpen
+                className={`fixed top-0 inset-x-0 transition-[padding,box-shadow,opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex justify-between items-center px-6 md:px-12 bg-brand-primary z-[110] ${scrolled && !isMobileMenuOpen
                         ? 'shadow-[0_8px_30px_rgba(15,30,20,0.6)] py-4'
                         : 'py-6'
-                    }`}
+                    } ${shouldHideHeader ? 'opacity-0 -translate-y-4 pointer-events-none' : 'opacity-100 translate-y-0'}`}
             >
                 {/* Desktop Left Nav */}
                 <nav className="hidden md:flex flex-1 justify-start gap-10 text-sm font-medium tracking-widest text-brand-bg uppercase">
                     {location.pathname === '/menu' ? (
-                        <Link to="/" className="hover:opacity-70 transition-opacity flex items-center gap-2">
+                        <Link to="/" className="[@media(hover:hover)]:hover:opacity-70 transition-opacity flex items-center gap-2">
                             <span>&larr;</span> Back to Home
                         </Link>
                     ) : (
                         <>
-                            <Link to="/menu" className="hover:opacity-70 transition-opacity">Menu</Link>
-                            <a href="#/" onClick={(e) => { e.preventDefault(); document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }); }} className="hover:opacity-70 transition-opacity cursor-pointer">About Us</a>
+                            <Link to="/menu" className="[@media(hover:hover)]:hover:opacity-70 transition-opacity">Menu</Link>
+                            <a href="#/" onClick={(e) => { e.preventDefault(); document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }); }} className="[@media(hover:hover)]:hover:opacity-70 transition-opacity cursor-pointer">About Us</a>
                         </>
                     )}
                 </nav>
@@ -71,9 +144,9 @@ export default function Layout({ children }) {
                 {/* Desktop Right Nav & CTA */}
                 <div className="hidden md:flex flex-1 justify-end items-center gap-10 text-sm font-medium tracking-widest text-brand-bg uppercase">
                     {location.pathname !== '/menu' && (
-                        <a href="#/" onClick={(e) => { e.preventDefault(); document.getElementById('hours')?.scrollIntoView({ behavior: 'smooth' }); }} className="hover:opacity-70 transition-opacity cursor-pointer">Hours</a>
+                        <a href="#/" onClick={(e) => { e.preventDefault(); document.getElementById('hours')?.scrollIntoView({ behavior: 'smooth' }); }} className="[@media(hover:hover)]:hover:opacity-70 transition-opacity cursor-pointer">Hours</a>
                     )}
-                    <a href="https://order.online/store/the-green-witch-cafe-highland-1441314?pickup=true" target="_blank" rel="noopener noreferrer" className="border border-brand-accent bg-brand-accent text-brand-bg px-8 py-2.5 text-sm font-bold uppercase tracking-widest transition-colors duration-300 hover:bg-transparent hover:text-brand-accent">
+                    <a href="https://order.online/store/the-green-witch-cafe-highland-1441314?pickup=true" target="_blank" rel="noopener noreferrer" className="border border-brand-accent bg-brand-accent text-brand-bg px-8 py-2.5 text-sm font-bold uppercase tracking-widest transition-[background-color,color,transform] duration-200 ease-out [@media(hover:hover)]:hover:bg-transparent [@media(hover:hover)]:hover:text-brand-accent active:scale-[0.97]">
                         Order Now
                     </a>
                 </div>
@@ -84,7 +157,7 @@ export default function Layout({ children }) {
                         href="https://order.online/store/the-green-witch-cafe-highland-1441314?pickup=true"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`text-sm font-medium tracking-widest text-brand-bg uppercase hover:opacity-70 transition-opacity ${isMobileMenuOpen ? 'opacity-0 invisible' : 'opacity-100 visible'}`}
+                        className={`text-sm font-medium tracking-widest text-brand-bg uppercase [@media(hover:hover)]:hover:opacity-70 transition-opacity ${isMobileMenuOpen ? 'opacity-0 invisible' : 'opacity-100 visible'}`}
                     >
                         Order
                     </a>
@@ -145,14 +218,14 @@ export default function Layout({ children }) {
                                                     document.getElementById(item.path.replace('#', ''))?.scrollIntoView({ behavior: 'smooth' });
                                                 }, 400);
                                             }}
-                                            className={`font-serif text-5xl text-brand-bg tracking-wide block transition-opacity hover:opacity-70`}
+                                            className={`font-serif text-5xl text-brand-bg tracking-wide block transition-opacity [@media(hover:hover)]:hover:opacity-70`}
                                         >
                                             {item.label}
                                         </a>
                                     ) : (
                                         <Link
                                             to={item.path}
-                                            className={`font-serif text-5xl text-brand-bg tracking-wide block transition-opacity hover:opacity-70 ${location.pathname === item.path ? 'font-bold' : ''}`}
+                                            className={`font-serif text-5xl text-brand-bg tracking-wide block transition-opacity [@media(hover:hover)]:hover:opacity-70 ${location.pathname === item.path ? 'font-bold' : ''}`}
                                         >
                                             {item.label}
                                         </Link>
@@ -167,7 +240,7 @@ export default function Layout({ children }) {
                             transition={{ delay: 0.5, duration: 0.4 }}
                             className="w-full flex flex-col items-center mt-16"
                         >
-                            <a href="https://order.online/store/the-green-witch-cafe-highland-1441314?pickup=true" target="_blank" rel="noopener noreferrer" className="w-full max-w-sm border border-brand-accent bg-brand-accent text-brand-bg px-8 py-4 text-base font-bold uppercase tracking-widest transition-colors active:bg-transparent active:text-brand-accent text-center block">
+                            <a href="https://order.online/store/the-green-witch-cafe-highland-1441314?pickup=true" target="_blank" rel="noopener noreferrer" className="w-full max-w-sm border border-brand-accent bg-brand-accent text-brand-bg px-8 py-4 text-base font-bold uppercase tracking-widest transition-[background-color,color,transform] duration-200 ease-out active:bg-transparent active:text-brand-accent active:scale-[0.97] text-center block">
                                 Order Online Now
                             </a>
                         </motion.div>
@@ -179,59 +252,143 @@ export default function Layout({ children }) {
                 {children}
             </main>
 
-            <footer className="py-20 px-4 md:px-8 bg-brand-primary text-brand-bg mt-24 border-t border-brand-secondary/20">
-                <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 items-center text-center">
+            <footer className="mt-24 border-t border-brand-secondary/20 bg-brand-primary px-4 py-16 text-brand-bg md:px-8 md:py-20">
+                <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 md:grid-cols-3 md:gap-16 lg:gap-20">
 
-                    {/* Left Column: Address & Contact */}
-                    <div className="flex flex-col items-center gap-4 text-sm tracking-wide">
-                        <p>2845 Highway Ave</p>
-                        <p>Highland, IN 46322</p>
-                        <p className="mt-2">(219) 923-3800</p>
-                        <p>Tue - Sat: 9:00 AM - 4:00 PM</p>
-                    </div>
-
-                    {/* Middle Column: Name & Socials */}
-                    <div className="flex flex-col items-center justify-center gap-6">
+                    <div className="flex flex-col gap-8 text-left">
                         <img
                             src={`${import.meta.env.BASE_URL}assets/logo-no-text.png`}
                             alt="Green Witch Cafe Logo"
-                            className="h-32 md:h-48 w-auto object-contain mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
+                            className="h-28 w-auto object-contain self-start -ml-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] md:h-36 md:-ml-4 md:-mt-4 lg:h-40 lg:-ml-6 lg:-mt-6"
                         />
-                        <div className="flex items-center gap-6 mt-4">
-                            {/* Facebook Icon */}
-                            <a href="https://www.facebook.com/TheGreenWitchCafe/" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+
+                        <div className="flex flex-col gap-6">
+                            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-brand-bg/55">
+                                Explore
+                            </p>
+                            <div className="flex flex-col gap-2.5 text-sm sm:text-[15px] text-brand-bg/88">
+                                {footerNavItems.map((item) => (
+                                    item.href ? (
+                                        <a
+                                            key={item.label}
+                                            href={item.href}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="transition-opacity [@media(hover:hover)]:hover:opacity-70"
+                                        >
+                                            {item.label}
+                                        </a>
+                                    ) : (
+                                        <Link
+                                            key={item.label}
+                                            to={item.to}
+                                            className="transition-opacity [@media(hover:hover)]:hover:opacity-70"
+                                        >
+                                            {item.label}
+                                        </Link>
+                                    )
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="hidden md:flex md:flex-col md:gap-6 md:text-left">
+                        <div className="space-y-2">
+                            <h3 className="font-serif text-3xl leading-none text-brand-bg">
+                                Our Hours
+                            </h3>
+                        </div>
+
+                        <div className="flex flex-col gap-2.5">
+                            {footerHours.map((entry, index) => {
+                                const isToday = index === todayIndex;
+
+                                return (
+                                    <div
+                                        key={entry.day}
+                                        className={`grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-6 px-4 py-3 text-sm transition-colors ${
+                                            isToday ? 'text-brand-bg' : 'text-brand-bg/78'
+                                        }`}
+                                    >
+                                        <span className={isToday ? 'font-semibold text-brand-bg' : ''}>
+                                            {entry.day}
+                                        </span>
+                                        <span className={`text-right tabular-nums ${isToday ? 'font-semibold text-brand-bg' : ''}`}>
+                                            {entry.hours}
+                                        </span>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col gap-6 text-left md:gap-10">
+                        <div className="space-y-2">
+                            <h3 className="font-serif text-3xl leading-none text-brand-bg">
+                                Stay in Touch!
+                            </h3>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                            <a
+                                href="https://www.facebook.com/TheGreenWitchCafe/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Visit us on Facebook"
+                                className="flex h-11 w-11 items-center justify-center rounded-full border border-brand-bg/18 bg-brand-bg/8 text-brand-bg transition-[transform,background-color,border-color] duration-200 ease-out [@media(hover:hover)]:hover:-translate-y-0.5 [@media(hover:hover)]:hover:border-brand-bg/32 [@media(hover:hover)]:hover:bg-brand-bg/14"
+                            >
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
                                 </svg>
                             </a>
-                            {/* Instagram Icon */}
-                            <a href="#" className="hover:opacity-70 transition-opacity">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <a
+                                href="https://www.instagram.com/green.witch.cafe/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Visit us on Instagram"
+                                className="flex h-11 w-11 items-center justify-center rounded-full border border-brand-bg/18 bg-brand-bg/8 text-brand-bg transition-[transform,background-color,border-color] duration-200 ease-out [@media(hover:hover)]:hover:-translate-y-0.5 [@media(hover:hover)]:hover:border-brand-bg/32 [@media(hover:hover)]:hover:bg-brand-bg/14"
+                            >
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                                     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                                 </svg>
                             </a>
-                            {/* TikTok Icon */}
-                            <a href="#" className="hover:opacity-70 transition-opacity">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
+                        </div>
+
+                        <div className="flex flex-col gap-2.5 pt-3 text-sm sm:text-[15px] text-brand-bg/88 md:pt-6">
+                            <a
+                                href="https://www.google.com/maps/dir/?api=1&destination=2845+Highway+Ave,+Highland,+IN+46322"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-start gap-3 transition-opacity [@media(hover:hover)]:hover:opacity-70"
+                            >
+                                <svg className="mt-0.5 h-4 w-4 shrink-0 text-brand-bg/65" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M21 10c0 6-9 13-9 13S3 16 3 10a9 9 0 1 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
                                 </svg>
+                                <span>2845 Highway Ave, Highland, IN 46322</span>
+                            </a>
+                            <a
+                                href="mailto:greenwitch2845@gmail.com"
+                                className="flex items-start gap-3 transition-opacity [@media(hover:hover)]:hover:opacity-70"
+                            >
+                                <svg className="mt-0.5 h-4 w-4 shrink-0 text-brand-bg/65" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M4 4h16v16H4z"></path>
+                                    <path d="m22 6-10 7L2 6"></path>
+                                </svg>
+                                <span>greenwitch2845@gmail.com</span>
+                            </a>
+                            <a
+                                href="tel:+12199233800"
+                                className="flex items-start gap-3 transition-opacity [@media(hover:hover)]:hover:opacity-70"
+                            >
+                                <svg className="mt-0.5 h-4 w-4 shrink-0 text-brand-bg/65" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                                <span>(219) 923-3800</span>
                             </a>
                         </div>
-                    </div>
-
-                    {/* Right Column: CTA Links */}
-                    <div className="flex flex-col items-center gap-6 text-sm tracking-wide">
-                        <Link to="/menu" className="hover:opacity-80 transition-opacity">
-                            View Our <span className="underline underline-offset-4">Menu!</span>
-                        </Link>
-                        <Link to="#" className="hover:opacity-80 transition-opacity">
-                            Interested in Pickup? Order <span className="underline underline-offset-4">HERE</span>
-                        </Link>
-                        <Link to="#" className="hover:opacity-80 transition-opacity">
-                            Purchase <span className="underline underline-offset-4">Gift Cards</span>
-                        </Link>
                     </div>
 
                 </div>

@@ -22,3 +22,39 @@ body {
     background-color: theme('colors.brand.secondary');
     border-radius: 4px;
 }
+
+/* Infinite marquee scroll — CSS transform only for GPU performance */
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 60s linear infinite;
+}
+
+/* Respect reduced motion preferences — keep opacity/color fades, remove transform-based motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.2s !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* Allow opacity and color transitions to remain for comprehension */
+    [style*="transform"],
+    [style*="translate"],
+    [style*="scale"],
+    [style*="rotate"] {
+        transition-property: opacity, color, background-color !important;
+    }
+}

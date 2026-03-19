@@ -1,11 +1,14 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import menuData from '../data/menu.json';
 
 export default function Menu() {
     const location = useLocation();
     const [activeTab, setActiveTab] = useState('Food');
+    const shouldReduceMotion = useReducedMotion();
+    const heroEase = [0.16, 1, 0.3, 1];
+    const menuTitleChars = ['M', 'E', 'N', 'U'];
 
     // Handle deep linking to specific tabs
     useEffect(() => {
@@ -55,42 +58,76 @@ export default function Menu() {
         <div className="w-full min-h-[100dvh] bg-brand-bg text-brand-text pb-32">
 
             {/* Hero Header Area */}
-            <div className="w-full pt-16 pb-6 md:pb-6 px-4 md:px-8">
+            <div className="w-full pt-24 md:pt-36 pb-10 md:pb-14 px-4 md:px-8">
                 <div className="max-w-7xl mx-auto text-center">
-                    <div className="flex items-center justify-center gap-4 md:gap-8 mb-6">
-                        <span className="w-12 md:w-24 h-[1px] bg-brand-primary"></span>
-                        <h1 className="font-serif text-6xl md:text-8xl text-brand-primary tracking-wide uppercase">Menu</h1>
-                        <span className="w-12 md:w-24 h-[1px] bg-brand-primary"></span>
+                    <div className="flex items-center justify-center gap-4 md:gap-10 mb-8 md:mb-10">
+                        <motion.span
+                            initial={shouldReduceMotion ? { opacity: 1, scaleX: 1 } : { opacity: 0, scaleX: 0.35 }}
+                            animate={{ opacity: 1, scaleX: 1 }}
+                            transition={{ duration: 0.45, delay: 0.05, ease: heroEase }}
+                            className="w-10 md:w-20 h-[1px] bg-brand-primary/80 origin-right"
+                        ></motion.span>
+                        <h1 className="font-serif text-6xl md:text-8xl lg:text-9xl text-brand-primary tracking-wide uppercase leading-none">
+                            {menuTitleChars.map((char, index) => (
+                                <motion.span
+                                    key={char}
+                                    initial={shouldReduceMotion ? { opacity: 1, filter: 'blur(0px)' } : { opacity: 0, filter: 'blur(8px)' }}
+                                    animate={{ opacity: 1, filter: 'blur(0px)' }}
+                                    transition={{ duration: 0.28, delay: 0.12 + (index * 0.08), ease: heroEase }}
+                                    className="inline-block"
+                                >
+                                    {char}
+                                </motion.span>
+                            ))}
+                        </h1>
+                        <motion.span
+                            initial={shouldReduceMotion ? { opacity: 1, scaleX: 1 } : { opacity: 0, scaleX: 0.35 }}
+                            animate={{ opacity: 1, scaleX: 1 }}
+                            transition={{ duration: 0.45, delay: 0.05, ease: heroEase }}
+                            className="w-10 md:w-20 h-[1px] bg-brand-primary/80 origin-left"
+                        ></motion.span>
                     </div>
 
                     {/* Menu Quote */}
-                    <p className="font-serif text-2xl md:text-3xl text-brand-primary/90 italic tracking-wide max-w-2xl mx-auto mb-16 px-4">
+                    <motion.p
+                        initial={shouldReduceMotion ? { opacity: 1, y: 0, filter: 'blur(0px)' } : { opacity: 0, y: 24, filter: 'blur(10px)' }}
+                        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                        transition={{ duration: 0.65, delay: 0.42, ease: heroEase }}
+                        className="font-serif text-2xl md:text-3xl text-brand-primary/90 italic tracking-wide max-w-2xl mx-auto mb-20 md:mb-28 px-4"
+                    >
                         "Wickedly good."
-                    </p>
+                    </motion.p>
 
                     {/* Top Nav Categories */}
-                    <div className="flex justify-center flex-wrap gap-6 md:gap-24 pb-4 w-fit mx-auto px-4 md:px-12">
-                        {['Food', 'Drinks', 'Gift Shop'].map(tab => (
-                            <motion.button
-                                key={tab}
-                                onClick={() => setActiveTab(tab)}
-                                animate={{
-                                    scale: activeTab === tab ? 1.05 : 1,
-                                    opacity: activeTab === tab ? 1 : 0.6,
-                                }}
-                                whileHover={{ opacity: 1 }}
-                                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                                className={`text-xl md:text-4xl font-sans tracking-[0.15em] uppercase text-brand-primary ${activeTab === tab ? 'font-medium' : ''}`}
-                            >
-                                {tab}
-                            </motion.button>
+                    <div className="flex justify-center flex-wrap gap-x-8 gap-y-4 md:gap-x-24 md:gap-y-6 pb-4 w-fit mx-auto px-4 md:px-12">
+                        {['Food', 'Drinks', 'Gift Shop'].map((tab, index) => (
+                            <div key={tab} className="overflow-hidden">
+                                <motion.button
+                                    onClick={() => setActiveTab(tab)}
+                                    initial={shouldReduceMotion ? { opacity: activeTab === tab ? 1 : 0.6, y: 0 } : { opacity: 0, y: '115%' }}
+                                    animate={{
+                                        transform: activeTab === tab ? 'scale(1.05)' : 'scale(1)',
+                                        opacity: activeTab === tab ? 1 : 0.6,
+                                        y: 0,
+                                    }}
+                                    whileHover={{ opacity: 1 }}
+                                    transition={{
+                                        duration: 0.45,
+                                        delay: shouldReduceMotion ? 0 : 0.62 + (index * 0.08),
+                                        ease: heroEase
+                                    }}
+                                    className={`text-lg md:text-4xl font-sans tracking-[0.15em] uppercase text-brand-primary active:scale-[0.97] transition-transform duration-150 ease-out ${activeTab === tab ? 'font-medium' : ''}`}
+                                >
+                                    {tab}
+                                </motion.button>
+                            </div>
                         ))}
                     </div>
                 </div>
             </div>
 
             {/* Menu Content Area */}
-            <div className="max-w-6xl mx-auto min-h-[50vh] pt-6 md:pt-8 px-4 md:px-8">
+            <div className="max-w-6xl mx-auto min-h-[50vh] pt-4 md:pt-6 px-4 md:px-8">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={activeTab}
@@ -159,7 +196,7 @@ export default function Menu() {
                     href="https://order.online/store/the-green-witch-cafe-highland-1441314?pickup=true"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block border border-brand-primary bg-brand-primary text-brand-bg px-10 py-4 text-sm uppercase tracking-widest rounded-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:bg-transparent hover:text-brand-primary font-medium"
+                    className="inline-block border border-brand-primary bg-brand-primary text-brand-bg px-10 py-4 text-sm uppercase tracking-widest rounded-full transition-[transform,box-shadow,background-color,color] duration-200 ease-out [@media(hover:hover)]:hover:-translate-y-1 [@media(hover:hover)]:hover:shadow-lg [@media(hover:hover)]:hover:bg-transparent [@media(hover:hover)]:hover:text-brand-primary active:scale-[0.97] font-medium"
                 >
                     Order Online Now
                 </a>
